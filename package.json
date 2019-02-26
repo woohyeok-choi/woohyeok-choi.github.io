@@ -1,10 +1,14 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "woohyeok-choi.github.io",
+  "homepage": "https://woohyeok-choi.github.io",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Woohyeok Choi's personal homepage",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Woohyeok Choi <woohyeok.choi@kaist.ac.kr>",
   "dependencies": {
+    "@types/react": "^16.8.5",
+    "@types/react-dom": "^16.8.2",
+    "@types/semantic-ui": "^2.2.7",
     "gatsby": "^2.1.18",
     "gatsby-image": "^2.0.30",
     "gatsby-plugin-manifest": "^2.0.19",
@@ -13,17 +17,18 @@
     "gatsby-plugin-sharp": "^2.0.22",
     "gatsby-source-filesystem": "^2.0.23",
     "gatsby-transformer-sharp": "^2.1.14",
+    "gh-pages": "^2.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.85.0",
+    "typescript": "^3.3.3333"
   },
   "devDependencies": {
     "prettier": "^1.16.4"
   },
-  "keywords": [
-    "gatsby"
-  ],
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
@@ -31,13 +36,7 @@
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
-  },
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
+    "deploy": "gatsby build && gh-pages -d public -b master"
   }
-}
+ }
