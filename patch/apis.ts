@@ -1,6 +1,11 @@
-import { resolve } from 'path'
-import { GatsbyCreatePages } from './types'
+import { resolve } from "path"
+import { GatsbyCreatePages } from "./types"
 
+enum QueryType {
+  TAG,
+  CATEGORY,
+  NONE
+}
 
 interface QueryNodeResult {
   node: {
@@ -9,7 +14,10 @@ interface QueryNodeResult {
       title: string
     }
     fields: {
-      slug: string
+      slug: {
+        origin: string
+        alias: string
+      }
       category?: {
         name: string
         slug?: string
@@ -22,31 +30,96 @@ interface QueryNodeResult {
   }
 }
 
+interface QueryGroupResult {
+  fieldValue: string
+  totalCount: number
+  edges: Array<QueryNodeResult>
+}
+
 interface QueryResult {
   data: {
     posts: {
-      group: Array<{
-        fieldValue: string
-        totalCount: number
-        edges: Array<QueryNodeResult>
-      }>
       totalCount
       edges: Array<QueryNodeResult>
+      groupByTag: Array<QueryGroupResult>
+      groupByCategory: Array<QueryGroupResult>
     }
   }
 }
 
-export const createPages: GatsbyCreatePages = async ({graphql, boundActionCreators}) => {
+const generatePagesWithSiblingPages = (
+  edges: Array<QueryNodeResult>, totalCount: number, alias: boolean
+) => edges.map(({ node }, index, arr) => {
+  const prevIndex = Math.max(index - 1, 0)
+  const nextIndex = Math.min(index + 1, totalCount - 1)
+
+  const prevPost = prevIndex === index ? undefined : {
+    title: arr[prevIndex].node.frontmatter.title,
+    slug: alias ? arr[prevIndex].node.fields.slug.alias : arr[prevIndex].node.fields.slug.origin,
+  }
+
+  const nextPost = nextIndex === index ? undefined : {
+    title: arr[nextIndex].node.frontmatter.title,
+    slug: alias ? arr[nextIndex].node.fields.slug.alias : arr[nextIndex].node.fields.slug.origin,
+  }
+
+  const currentSlug = alias ? node.fields.slug.alias : node.fields.slug.origin
+  const postId = node.id
+  return (
+    {
+      path: currentSlug,
+      component: resolve(__dirname, "../src/templates/blog-post.tsx"),
+      context: {
+        postId,
+        alias,
+        prevPost,
+        nextPost,
+      }
+    }
+  )
+})
+
+const generatePagination = (
+  totalCount: number, postsPerPage: number, type: QueryType, param?: string
+) => {
+  const nPages = Math.ceil(totalCount / postsPerPage)
+  let basePath = ''
+  switch (type) {
+    case QueryType.TAG:
+      basePath = `/blog/tags/${param}`
+      break
+    case QueryType.CATEGORY:
+      basePath = `/blog/categories/${param}`
+      break
+  }
+
+  return Array.from({
+    length: nPages
+  }).map((_, index) => ({
+      path: index === 0 ? basePath  : `${basePath}/pages/${index + 1}`,
+      component: resolve(__dirname, "../src/templates/blog-list.tsx"),
+      context: {
+        limit: postsPerPage,
+        skip: index * postsPerPage,
+        currentPage: index + 1,
+        type,
+        param
+      }
+    })
+  )
+}
+
+export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
-  const result: QueryResult = await graphql(`
+  const { data }: QueryResult = await graphql(`
     {
       posts: allMarkdownRemark(
         sort: {
-          fields: frontmatter___datetime
+          fields: [frontmatter___date, frontmatter___time]
           order: DESC
         }
       ) {
-        group(field: frontmatter___tags) {
+        groupByTag: group(field: frontmatter___tags) {
           fieldValue
           totalCount
           edges {
@@ -56,12 +129,15 @@ export const createPages: GatsbyCreatePages = async ({graphql, boundActionCreato
                 title
               }
               fields {
-                slug
-                categorySlug {
+                slug {
+                  origin
+                  alias
+                }
+                category {
                   name
                   slug
                 }
-                tagsSlug {
+                tags {
                   name
                   slug
                 }
@@ -69,20 +145,49 @@ export const createPages: GatsbyCreatePages = async ({graphql, boundActionCreato
             }
           }
         }
-        edges {
+        groupByCategory: group(field: frontmatter___category) {
+          fieldValue
           totalCount
+          edges {
+            node {
+              id
+              frontmatter {
+                title
+              }
+              fields {
+                slug {
+                  origin
+                  alias
+                }
+                category {
+                  name
+                  slug
+                }
+                tags {
+                  name
+                  slug
+                }
+              }
+            }
+          }
+        }
+        totalCount
+        edges {
           node {
             id
             frontmatter {
               title
             }
             fields {
-              slug
-              categorySlug {
+              slug {
+                origin
+                alias
+              }
+              category {
                 name
                 slug
               }
-              tagsSlug {
+              tags {
                 name
                 slug
               }
@@ -95,75 +200,18 @@ export const createPages: GatsbyCreatePages = async ({graphql, boundActionCreato
   /**
    * Create pages for each blog posts
    */
-  result.data.posts.edges.forEach((edge, index, arr) => {
-    const nPosts = result.data.posts.totalCount
-    const prevIndex = Math.max(index - 1, 0)
-    const nextIndex = Math.min(index + 1, nPosts - 1)
-    const prevPost = prevIndex === index ? undefined : {
-      title: arr[prevIndex].node.frontmatter.title,
-      slug: arr[prevIndex].node.fields.slug
-    }
-    const nextPost = nextIndex === index ? undefined : {
-      title: arr[nextIndex].node.frontmatter.title,
-      slug: arr[nextIndex].node.fields.slug
-    }
-    const currentSlug = edge.node.fields.slug
-    const postId = edge.node.id
+  generatePagesWithSiblingPages(
+    data.posts.edges,
+    data.posts.totalCount,
+    false
+  ).forEach(value => createPage(value))
 
-    createPage({
-      path: currentSlug,
-      component: resolve(__dirname, '../src/templates/blog-post.tsx'),
-      context: {
-        postId,
-        prevPost,
-        nextPost
-      }
-    })
+  data.posts.groupByCategory.forEach(({ edges, totalCount }) => {
+    generatePagesWithSiblingPages(
+      edges, totalCount, true
+    ).forEach(value => createPage(value))
   })
 
-  /**
-   * Create pages for each blog posts with categories
-   */
-  result.data.posts.group.forEach((edge, index, arr) => {
+  generatePagination(data.posts.totalCount, 10, QueryType.NONE).forEach(value => createPage(value))
 
-  })
-
-  /**
-   * Create each blog pages
-   */
-  edges.forEach(edge => {
-    const { node } = edge
-    const { slug } = node.fields
-    if (!slug) return
-
-    createPage({
-      path: slug,
-      component: resolve(__dirname, '../src/templates/blog-post.tsx'),
-      context: {
-        slug
-      }
-    })
-  })
-
-  /**
-   * Create pagination
-   */
-  const postsPerPage = 3
-  const nPosts = edges.length
-  const nPages = Math.ceil(nPosts / postsPerPage)
-
-  Array.from({
-    length: nPages
-  }).forEach((_, pageNum) => {
-    createPage({
-      path: pageNum === 0 ? '/blog' : `/blog/pages/${pageNum + 1}`,
-      component: resolve(__dirname, '../src/templates/blog-list.tsx'),
-      context: {
-        limit: postsPerPage,
-        skip: pageNum * postsPerPage,
-        currentPage: pageNum + 1,
-        postsPerPage
-      }
-    })
-  })
 }

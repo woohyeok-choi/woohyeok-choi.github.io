@@ -3,9 +3,6 @@
 require('source-map-support').install()
 require('ts-node').register({files: true})
 
-const { createPages } = require('./patch/apis')
-
-exports.createPages = createPages
 
 exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
@@ -14,11 +11,14 @@ exports.onCreateNode = ({ node, actions }) => {
     createNodeField({
       node,
       name: 'slug',
-      value: `/blog/posts/${node.frontmatter.datetime}-${node.frontmatter.title}`
+      value: {
+        origin: `/blog/posts/${node.frontmatter.date}-${node.frontmatter.title}`,
+        alias: `/blog/categories/${node.frontmatter.category}/posts/${node.frontmatter.date}-${node.frontmatter.title}`
+      }
     })
     createNodeField({
       node,
-      name: 'categorySlug',
+      name: 'category',
       value: {
         name: node.frontmatter.category,
         slug: `/blog/categories/${node.frontmatter.category}`
@@ -26,7 +26,7 @@ exports.onCreateNode = ({ node, actions }) => {
     })
     createNodeField({
       node,
-      name: 'tagsSlug',
+      name: 'tags',
       value: node.frontmatter.tags.map(tag => ({
         name: tag,
         slug: `/blog/tags/${tag}`
@@ -34,3 +34,7 @@ exports.onCreateNode = ({ node, actions }) => {
     })
   }
 }
+
+// const { createPages } = require('./patch/apis')
+
+// exports.createPages = createPages
