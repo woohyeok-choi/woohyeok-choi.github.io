@@ -8,6 +8,8 @@
   "dependencies": {
     "@types/react": "^16.8.5",
     "@types/react-dom": "^16.8.2",
+    "@types/react-slick": "^0.23.3",
+    "@types/react-swipe": "^6.0.0",
     "@types/semantic-ui": "^2.2.7",
     "gatsby": "^2.1.18",
     "gatsby-image": "^2.0.30",
@@ -15,16 +17,33 @@
     "gatsby-plugin-offline": "^2.0.24",
     "gatsby-plugin-react-helmet": "^3.0.7",
     "gatsby-plugin-sharp": "^2.0.22",
+    "gatsby-plugin-typescript": "^2.0.9",
+    "gatsby-plugin-typography": "^2.2.7",
+    "gatsby-remark-copy-linked-files": "^2.0.9",
+    "gatsby-remark-images": "^3.0.5",
     "gatsby-source-filesystem": "^2.0.23",
+    "gatsby-transformer-csv": "^2.0.7",
+    "gatsby-transformer-remark": "^2.3.0",
     "gatsby-transformer-sharp": "^2.1.14",
     "gh-pages": "^2.0.1",
+    "nuka-carousel": "^4.4.8",
     "prop-types": "^15.7.2",
+    "pure-react-carousel": "^1.18.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-helmet": "^5.2.0",
+    "react-id-swiper": "^1.6.9",
+    "react-slick": "^0.23.2",
+    "react-swipe": "^6.0.4",
+    "react-typography": "^0.16.18",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.85.0",
-    "typescript": "^3.3.3333"
+    "slick-carousel": "^1.8.1",
+    "source-map-support": "^0.5.10",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3333",
+    "typography": "^0.16.18",
+    "typography-theme-moraga": "^0.16.18"
   },
   "devDependencies": {
     "prettier": "^1.16.4"
@@ -39,4 +58,4 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
     "deploy": "gatsby build && gh-pages -d public -b master"
   }
- }
+}
