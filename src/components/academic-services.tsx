@@ -1,7 +1,7 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
 import { AcademicServiceData } from "../props"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 
 const AcademicServices: React.FunctionComponent<Props> = ({
   items
@@ -29,26 +29,37 @@ interface Props {
   items: Array<AcademicServiceData>
 }
 
-export default () => (
-  <StaticQuery query={graphql`
-  query {
-    academicServices: allAcademicServicesCsv (
-      sort: {
-        fields: date
-        order: DESC
-      }
-    ) {
-      edges {
-        node {
-          id
-          year
-          organization
-          service
+interface QueryResult {
+  data: {
+    academicServices: {
+      edges: Array<{
+        node: AcademicServiceData
+      }>
+    }
+  }
+}
+
+export default () => {
+  const { data } : QueryResult = useStaticQuery(graphql`
+    query {
+      academicServices: allAcademicServicesCsv (
+        sort: {
+          fields: date
+          order: DESC
+        }
+      ) {
+        edges {
+          node {
+            id
+            year
+            organization
+            service
+          }
         }
       }
-    }
-  }`} render={
-    (data) =>
-        <AcademicServices items={data.academicServices.edges.map(datum => datum.node)}/>
-  }/>
-)
+    }`
+  )
+  return (
+    <AcademicServices items={data.academicServices.edges.map(({ node }) => node)}/>
+  )
+}

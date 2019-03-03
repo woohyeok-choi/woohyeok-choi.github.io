@@ -1,7 +1,7 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
 import { AffiliationData } from "../props"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 
 const Affiliations: React.FunctionComponent<Props> = ({
   items
@@ -30,8 +30,18 @@ interface Props {
   items: Array<AffiliationData>
 }
 
-export default () => (
-  <StaticQuery query={graphql`
+interface QueryResult {
+  data: {
+    affiliations: {
+      edges: Array<{
+        node: AffiliationData
+      }>
+    }
+  }
+}
+
+export default () => {
+  const { data } : QueryResult = useStaticQuery(graphql`
     query {
       affiliations: allAffiliationsCsv(
         sort: {
@@ -48,8 +58,9 @@ export default () => (
           }
         }
       }
-    }
-  `} render={ (data) =>
-    <Affiliations items={data.affiliations.edges.map(datum => datum.node)}/>
-  }/>
-)
+    }`
+  )
+  return (
+    <Affiliations items={data.affiliations.edges.map(({ node }) => node)}/>
+  )
+}

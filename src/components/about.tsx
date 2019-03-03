@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Grid, Image, Label } from "semantic-ui-react"
 import { ContactData } from "../props"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 
 const About: React.FunctionComponent<Props> = ({
   content, contacts, imagePath
@@ -36,8 +36,18 @@ interface Props extends DefaultProps{
   contacts: Array<ContactData>
 }
 
-export default (props: DefaultProps) => (
-  <StaticQuery query={graphql`
+interface QueryResult {
+  data: {
+    contacts: {
+      edges: Array<{
+        node: ContactData
+      }>
+    }
+  }
+}
+
+export default (props: DefaultProps) => {
+  const { data } : QueryResult = useStaticQuery(graphql`
     query {
       contacts: allContactsCsv {
         edges {
@@ -50,9 +60,8 @@ export default (props: DefaultProps) => (
         }
       }
     }`
-  } render={
-    (data) =>
-      <About contacts={data.contacts.edges.map(datum => datum.node)} {...props}/>
-  }/>
-)
-
+  )
+  return (
+    <About contacts={data.contacts.edges.map(({ node }) => node)} {...props}/>
+  )
+}

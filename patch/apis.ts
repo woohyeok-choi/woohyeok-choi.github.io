@@ -124,7 +124,9 @@ export const createPages: GatsbyCreatePages = async ({graphql, boundActionCreato
   /**
    * Create pages for each blog posts with categories
    */
+  result.data.posts.group.forEach((edge, index, arr) => {
 
+  })
 
   /**
    * Create each blog pages

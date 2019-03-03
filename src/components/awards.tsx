@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Item } from "semantic-ui-react"
 import { AwardData } from "../props"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 
 const Awards: React.FunctionComponent<Props> = ({
   items
@@ -45,8 +45,17 @@ interface Props {
   items: Array<AwardData>
 }
 
-export default () => (
-  <StaticQuery query={graphql`
+interface QueryResult {
+  data: {
+    awards: {
+      edges: Array<{
+        node: AwardData
+      }>
+    }
+  }
+}
+export default () => {
+  const { data } : QueryResult = useStaticQuery(graphql`
     query {
       awards: allAwardsCsv(
         sort: {
@@ -65,7 +74,8 @@ export default () => (
         }
       }
     }`
-  } render={(data) =>
-    <Awards items={data.awards.edges.map(datum => datum.node)}/>
-  }/>
-)
+  )
+  return (
+    <Awards items={data.awards.edges.map(({ node }) => node)}/>
+  )
+}

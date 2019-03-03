@@ -2,7 +2,7 @@ import * as React from "react"
 import Carousel from 'nuka-carousel'
 import { Button, Card, Image, Label, Placeholder } from "semantic-ui-react"
 import { BlogItemData } from "../props"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 
 const ResearchPreview: React.FunctionComponent<Props> =  ({showControl, nShow = 1, items}) => (
   <Carousel
@@ -113,11 +113,11 @@ interface QueryResult {
       }>
     }
   }
-
 }
 
-export default (props: DefaultProps) => (
-  <StaticQuery query={graphql`
+
+export default (props: DefaultProps) => {
+  const { data } : QueryResult = useStaticQuery(graphql`
     query {
       research: allMarkdownRemark(
         sort: {
@@ -155,8 +155,9 @@ export default (props: DefaultProps) => (
         }
       }
     }`
-  } render={ (result: QueryResult) =>
-    <ResearchPreview items={result.data.research.edges.map(
+  )
+  return (
+    <ResearchPreview items={data.research.edges.map(
       ({ node }) => ({
         id: node.id,
         title: node.frontmatter.title,
@@ -170,5 +171,5 @@ export default (props: DefaultProps) => (
         tags: node.fields.tagsSlug.map(item => ({ name: item.name, path: item.slug }))
       })
     )} {...props}/>
-  }/>
-)
+  )
+}
