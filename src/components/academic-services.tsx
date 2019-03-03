@@ -1,32 +1,54 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
-import { AcademicServiceData } from "../data"
+import { AcademicServiceData } from "../props"
+import { graphql, StaticQuery } from "gatsby"
 
-class AcademicServices extends React.Component<Props> {
-  render(): React.ReactNode {
-    const { items } = this.props
-    return (
-      <List bulleted>
-        {items.map(
-          item =>
-            <List.Item key={item.id}>
-              <List.Content>
-                <List.Header>
-                  {item.year}. {item.service}
-                </List.Header>
-                <List.Description>
-                  {item.organization}
-                </List.Description>
-              </List.Content>
-            </List.Item>
-        )}
-      </List>
-    )
-  }
+const AcademicServices: React.FunctionComponent<Props> = ({
+  items
+}) => {
+  return (
+    <List bulleted>
+      {items.map(
+        item =>
+          <List.Item key={item.id}>
+            <List.Content>
+              <List.Header>
+                {item.year}. {item.service}
+              </List.Header>
+              <List.Description>
+                {item.organization}
+              </List.Description>
+            </List.Content>
+          </List.Item>
+      )}
+    </List>
+  )
 }
 
 interface Props {
   items: Array<AcademicServiceData>
 }
 
-export default AcademicServices
+export default () => (
+  <StaticQuery query={graphql`
+  query {
+    academicServices: allAcademicServicesCsv (
+      sort: {
+        fields: date
+        order: DESC
+      }
+    ) {
+      edges {
+        node {
+          id
+          year
+          organization
+          service
+        }
+      }
+    }
+  }`} render={
+    (data) =>
+        <AcademicServices items={data.academicServices.edges.map(datum => datum.node)}/>
+  }/>
+)
