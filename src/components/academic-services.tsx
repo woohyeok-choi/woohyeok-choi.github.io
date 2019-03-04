@@ -1,6 +1,6 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
-import { AcademicServiceData } from "../props"
+import { AcademicServiceType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const AcademicServices: React.FunctionComponent<Props> = ({
@@ -26,14 +26,14 @@ const AcademicServices: React.FunctionComponent<Props> = ({
 }
 
 interface Props {
-  items: Array<AcademicServiceData>
+  items: Array<AcademicServiceType>
 }
 
 interface QueryResult {
   data: {
     academicServices: {
       edges: Array<{
-        node: AcademicServiceData
+        node: AcademicServiceType
       }>
     }
   }

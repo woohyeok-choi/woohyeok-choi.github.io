@@ -1,5 +1,5 @@
 import { resolve } from "path"
-import { GatsbyCreatePages } from "./types"
+import { GatsbyCreatePages } from "../src/types/Api"
 
 enum QueryType {
   TAG,
@@ -111,7 +111,7 @@ const generatePagination = (
 
 export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
-  const { data }: QueryResult = await graphql(`
+  const  data = await graphql(`
     {
       posts: allMarkdownRemark(
         sort: {
@@ -200,18 +200,19 @@ export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreat
   /**
    * Create pages for each blog posts
    */
-  generatePagesWithSiblingPages(
+  console.log(data)
+  /*generatePagesWithSiblingPages(
     data.posts.edges,
     data.posts.totalCount,
     false
-  ).forEach(value => createPage(value))
+  ).forEach(value => createPage(value))*/
 
-  data.posts.groupByCategory.forEach(({ edges, totalCount }) => {
+  /*data.posts.groupByCategory.forEach(({ edges, totalCount }) => {
     generatePagesWithSiblingPages(
       edges, totalCount, true
     ).forEach(value => createPage(value))
   })
 
-  generatePagination(data.posts.totalCount, 10, QueryType.NONE).forEach(value => createPage(value))
+  generatePagination(data.posts.totalCount, 10, QueryType.NONE).forEach(value => createPage(value))*/
 
 }

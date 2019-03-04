@@ -1,11 +1,11 @@
-import { AcademicServiceData } from "./AcademicServiceData"
-import { AwardData } from "./AwardData"
-import { AffiliationData } from "./AffiliationData"
-import { BlogItemData } from "./BlogItemData"
-import { ContactData } from './ContactData'
-import { PublicationData } from "./PublicationData"
+import { AcademicServiceType } from "./AcademicServiceType"
+import { AwardType } from "./AwardType"
+import { AffiliationType } from "./AffiliationType"
+import { BlogPostType } from "./BlogPostType"
+import { ContactType } from './ContactType'
+import { PublicationType } from "./PublicationType"
 
 export {
-  AcademicServiceData, AwardData, AffiliationData,
-  BlogItemData, ContactData, PublicationData
+  AcademicServiceType, AwardType, AffiliationType,
+  BlogPostType, ContactType, PublicationType
 }

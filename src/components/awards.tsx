@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Item } from "semantic-ui-react"
-import { AwardData } from "../props"
+import { AwardType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const Awards: React.FunctionComponent<Props> = ({
@@ -38,18 +38,18 @@ const AwardItem: React.FunctionComponent<ItemProps> = ({
 }
 
 interface ItemProps {
-  data: AwardData
+  data: AwardType
 }
 
 interface Props {
-  items: Array<AwardData>
+  items: Array<AwardType>
 }
 
 interface QueryResult {
   data: {
     awards: {
       edges: Array<{
-        node: AwardData
+        node: AwardType
       }>
     }
   }

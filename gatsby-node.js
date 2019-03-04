@@ -35,6 +35,6 @@ exports.onCreateNode = ({ node, actions }) => {
   }
 }
 
-// const { createPages } = require('./patch/apis')
+const { createPages } = require('./patch/apis')
 
-// exports.createPages = createPages
+exports.createPages = createPages

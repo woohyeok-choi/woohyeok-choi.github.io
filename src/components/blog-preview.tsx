@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Button, Card, Label } from "semantic-ui-react"
-import { BlogItemData } from "../props"
+import { BlogPostType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 import Carousel from "nuka-carousel"
 
@@ -72,11 +72,11 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
-  items: Array<BlogItemData>
+  items: Array<BlogPostType>
 }
 
 interface ItemProps {
-  data: BlogItemData
+  data: BlogPostType
 }
 
 interface QueryResult {
@@ -91,7 +91,7 @@ interface QueryResult {
           }
           excerpt?: string
           fields: {
-            postSlug: string
+            slug: string
             categorySlug: {
               name: string
               slug: string
@@ -112,7 +112,7 @@ export default (props: DefaultProps) => {
     query {
       posts: allMarkdownRemark(
         sort: {
-          fields: frontmatter___datetime
+          fields: [frontmatter___date, frontmatter___time]
           order: DESC
         }
         filter: {

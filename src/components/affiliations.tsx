@@ -1,6 +1,6 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
-import { AffiliationData } from "../props"
+import { AffiliationType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const Affiliations: React.FunctionComponent<Props> = ({
@@ -27,14 +27,14 @@ const Affiliations: React.FunctionComponent<Props> = ({
 
 
 interface Props {
-  items: Array<AffiliationData>
+  items: Array<AffiliationType>
 }
 
 interface QueryResult {
   data: {
     affiliations: {
       edges: Array<{
-        node: AffiliationData
+        node: AffiliationType
       }>
     }
   }

@@ -1,4 +1,4 @@
-export interface BlogItemData {
+export interface BlogPostType {
   id?: string
   datetime?: string
   title: string
@@ -13,5 +13,8 @@ export interface BlogItemData {
   preview?: string
   content?: string
   description?: string
-  slug?: string
+  slug?: {
+    origin: string
+    alias: string
+  }
 }

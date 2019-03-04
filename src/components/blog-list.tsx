@@ -1,5 +1,5 @@
 import * as React from "react"
-import { BlogItemData } from "../props"
+import { BlogPostType } from "../types"
 import { Container, Label, Segment, Item } from "semantic-ui-react"
 
 const BlogList: React.FunctionComponent<Props> = ({ items }) => {
@@ -43,9 +43,9 @@ const BlogListItem: React.FunctionComponent<ItemProps> = ({ data }) => {
 }
 
 interface Props {
-  items: Array<BlogItemData>
+  items: Array<BlogPostType>
 }
 
 interface ItemProps {
-  data: BlogItemData
+  data: BlogPostType
 }

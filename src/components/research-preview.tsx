@@ -1,7 +1,7 @@
 import * as React from "react"
 import Carousel from 'nuka-carousel'
 import { Button, Card, Image, Label, Placeholder } from "semantic-ui-react"
-import { BlogItemData } from "../props"
+import { BlogPostType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const ResearchPreview: React.FunctionComponent<Props> =  ({showControl, nShow = 1, items}) => (
@@ -80,11 +80,11 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps {
-  items: Array<BlogItemData>
+  items: Array<BlogPostType>
 }
 
 interface ItemProps {
-  data: BlogItemData
+  data: BlogPostType
 }
 
 interface QueryResult {
@@ -121,7 +121,7 @@ export default (props: DefaultProps) => {
     query {
       research: allMarkdownRemark(
         sort: {
-          fields: frontmatter___datetime
+          fields: [frontmatter___date, frontmatter___time]
           order: DESC
         }
         filter: {

@@ -19,7 +19,7 @@ const BlogRecentPosts: React.FunctionComponent<Props> = ({
 export default () => (
   <StaticQuery query={graphql`
     query {
-      recentPosts: allMarkdownRemark(sort: {fields: frontmatter___datetime, order: DESC}, limit: 10) {
+      recentPosts: allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}, limit: 10) {
         edges {
           node {
             id

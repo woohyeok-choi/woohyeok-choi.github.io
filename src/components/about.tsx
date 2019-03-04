@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Grid, Image, Label } from "semantic-ui-react"
-import { ContactData } from "../props"
+import { ContactType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const About: React.FunctionComponent<Props> = ({
@@ -33,14 +33,14 @@ interface DefaultProps {
 }
 
 interface Props extends DefaultProps{
-  contacts: Array<ContactData>
+  contacts: Array<ContactType>
 }
 
 interface QueryResult {
   data: {
     contacts: {
       edges: Array<{
-        node: ContactData
+        node: ContactType
       }>
     }
   }

@@ -1,4 +1,4 @@
-export interface AcademicServiceData {
+export interface AcademicServiceType {
   id?: string
   year: string
   organization: string

@@ -1,4 +1,4 @@
-export interface AwardData {
+export interface AwardType {
   id?: string
   year: string
   organization: string

@@ -1,4 +1,4 @@
-export interface PublicationData {
+export interface PublicationType {
   id?: string
   type: string
   title: string
