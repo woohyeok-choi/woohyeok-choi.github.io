@@ -1,43 +1,53 @@
-import * as React from 'react'
+import * as React from "react"
 import { Label } from "semantic-ui-react"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
+import { formatPagePath } from "../utils"
 
-const BlogTags: React.FunctionComponent<Props> = ({
-  items
-}) => {
+const BlogTags: React.FunctionComponent<Props> = ({ items }) => {
   return (
     <Label.Group>
       {
-        items.map(item =>
-          <Label as={'a'} href={item.link}>
-            { item.tag } ({item.count})
-          </Label>
+        items.map(({ tag, link, count }) =>
+          <Label key={tag} as={"a"} href={link}>
+            {tag} ({count})
+          </Label>,
         )
       }
     </Label.Group>
   )
 }
 
-export default () => (
-  <StaticQuery query={graphql`
+export default () => {
+  const { tags }: QueryResult = useStaticQuery(graphql`
     query {
-      blogTags: allMarkdownRemark {
+      tags: allMarkdownRemark {
         group(field: frontmatter___tags) {
           fieldValue
           totalCount
         }
       }
-    }`
-  } render={ (data) =>
+    }`,
+  )
+  return (
     <BlogTags items={
-      data.blogTags.group.map(datum => ({
-        tag: datum.fieldValue,
-        count: datum.totalCount,
-        link: 'asdf'
+      tags.group.map(({ fieldValue, totalCount }) => ({
+        tag: fieldValue,
+        count: totalCount,
+        link: formatPagePath(0, "tag", fieldValue),
       }))
-    } />
-  }/>
-)
+    }/>
+  )
+}
+
+
+interface QueryResult {
+  tags: {
+    group: Array<{
+      fieldValue: string
+      totalCount: number
+    }>
+  }
+}
 
 interface Props {
   items: Array<{

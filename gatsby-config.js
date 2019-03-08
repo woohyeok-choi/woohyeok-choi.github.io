@@ -2,19 +2,13 @@ require('ts-node').register({files: true})
 
 module.exports = {
   siteMetadata: {
-    title: `Choi, Woohyeok | HCI, mobile health intervention`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `Choi, Woohyeok | woohyeok.choi@kaist.ac.kr`,
+    title: `Choi, Woohyeok | HCI, exertion game, mobile health intervention`,
+    description: `Choi, Woohyeok's personal website.`,
+    author: `Choi, Woohyeok`,
+    email: `woohyeok.choi@kaist.ac.kr`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `images`,
-        path: `${__dirname}/src/images`,
-      },
-    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -25,36 +19,50 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `posts`,
-        path: `${__dirname}/posts`,
+        name: `data`,
+        path: `${__dirname}/src/pages`,
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-transformer-excel`,
       options: {
-        name: `research`,
-        path: `${__dirname}/research`,
-      },
+        defval: "",
+        raw: false
+      }
     },
-   /* {
+    {
       resolve: `gatsby-plugin-typography`,
       options: {
         pathToConfigModule: `src/typography`,
       },
-    },*/
+    },
     {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
           {
             resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
           },
-          "gatsby-remark-copy-linked-files"
+          "gatsby-remark-copy-linked-files",
+          {
+            resolve: `gatsby-remark-classes`,
+
+          }
         ]
       }
     },
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        useMozJpeg: false,
+        stripMetadata: true,
+        defaultQuality: 75,
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -67,7 +75,6 @@ module.exports = {
       },
     },
     `gatsby-plugin-typescript`,
-    `gatsby-transformer-csv`
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',

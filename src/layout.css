@@ -1,0 +1,24 @@
+.slide {
+    padding: 10px
+}
+
+.see-more {
+    transition: all ease .5s
+}
+.see-more:hover {
+    background-color: rgb(27, 28, 29)
+}
+
+.pushable:not(body) {
+    transform: none;
+}
+
+.pushable:not(body) > .ui.sidebar,
+.pushable:not(body) > .fixed,
+.pushable:not(body) > .pusher:after {
+    position: fixed;
+}
+
+p.markdown {
+  font-size: 16px;
+}

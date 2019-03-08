@@ -1,51 +1,61 @@
 import * as React from "react"
-import { BlogPostType } from "../types"
-import { Container, Label, Segment, Item } from "semantic-ui-react"
+import { MarkdownRemarkNodeType } from "../types"
+import { Label, Item } from "semantic-ui-react"
+import { formatReadableDate } from "../utils"
 
-const BlogList: React.FunctionComponent<Props> = ({ items }) => {
+const BlogListItem: React.FunctionComponent<ItemProps> = ({ data, isAlias }) => {
+  const { node } = data
+  const { id, frontmatter, fields, excerpt } = node
+  const { title, date } = frontmatter
+  const { slug, category, tags } = fields
 
   return (
-    <Item.Group>
-    {
-      items.map(item =><BlogListItem data={item}/>)
-    }
+   <Item key={id}>
+     <Item.Content>
+       <Item.Header as={'a'} href={isAlias ? slug.alias : slug.origin }>
+         {title}
+       </Item.Header>
+       <Item.Meta>
+         {formatReadableDate(date)}
+       </Item.Meta>
+       <Item.Description>
+         {excerpt}
+       </Item.Description>
+       <Item.Extra>
+         <p>
+           Category: <a href={category.slug}>{category.name}</a>
+         </p>
+         <p>
+           {tags &&
+           <Label.Group>
+             {tags.map(({slug, name}) => <Label size={"mini"} as='a' href={slug}>{name}</Label>)}
+           </Label.Group>
+           }
+         </p>
+       </Item.Extra>
+     </Item.Content>
+   </Item>
+  )
+}
+
+
+export default (props : Props) => {
+  const { isAlias = false, items } = props
+  return (
+    <Item.Group divided>
+      {
+        items.map(item => <BlogListItem data={item} isAlias={isAlias}/>)
+      }
     </Item.Group>
   )
 }
 
-const BlogListItem: React.FunctionComponent<ItemProps> = ({ data }) => {
-  const { link, excerpt, frontmatter } = data
-  const { title, datetime, category, tags } = frontmatter
-
-  return (
-    <Item>
-      <Item.Content>
-        <Item.Header as={'a'} href={link}>{title}</Item.Header>
-        <Item.Meta>{datetime}</Item.Meta>
-        <Item.Description>
-          {excerpt}
-        </Item.Description>
-        <Item.Extra>
-          <p>
-            Category: {category}
-          </p>
-          <p>
-            { tags &&
-            <Label.Group>
-              {tags.map(tag => <Label size={'mini'} as='a'>{tag}</Label>)}
-            </Label.Group>
-            }
-          </p>
-        </Item.Extra>
-      </Item.Content>
-    </Item>
-  )
-}
-
 interface Props {
-  items: Array<BlogPostType>
+  isAlias: boolean
+  items: Array<MarkdownRemarkNodeType>
 }
 
 interface ItemProps {
-  data: BlogPostType
+  isAlias: boolean
+  data: MarkdownRemarkNodeType
 }

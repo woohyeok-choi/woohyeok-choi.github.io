@@ -2,39 +2,50 @@
 
 require('source-map-support').install()
 require('ts-node').register({files: true})
+const defiant = require('defiant.js')
 
+const { formatPostPath, formatBlogTagPath, formatBlogCategoryPath } = require('./src/utils')
 
 exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === 'MarkdownRemark') {
+    const { frontmatter } = node
+    const { title, date, category, tags } = frontmatter
+
+
     createNodeField({
       node,
       name: 'slug',
       value: {
-        origin: `/blog/posts/${node.frontmatter.date}-${node.frontmatter.title}`,
-        alias: `/blog/categories/${node.frontmatter.category}/posts/${node.frontmatter.date}-${node.frontmatter.title}`
+        origin: formatPostPath(date, title, 'none', null),
+        alias: formatPostPath(date, title, 'category', category),
       }
     })
+
     createNodeField({
       node,
       name: 'category',
       value: {
-        name: node.frontmatter.category,
-        slug: `/blog/categories/${node.frontmatter.category}`
+        name: category,
+        slug: formatBlogCategoryPath(category)
       }
     })
-    createNodeField({
-      node,
-      name: 'tags',
-      value: node.frontmatter.tags.map(tag => ({
-        name: tag,
-        slug: `/blog/tags/${tag}`
-      }))
-    })
+
+    if (tags) {
+      createNodeField({
+        node,
+        name: 'tags',
+        value: tags.map(tag => ({
+          name: tag,
+          slug: formatBlogTagPath(tag)
+        }))
+      })
+    }
   }
 }
 
-const { createPages } = require('./patch/apis')
 
+const { createPages } = require('./gatsby-node-patch')
 exports.createPages = createPages
+

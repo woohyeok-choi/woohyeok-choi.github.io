@@ -1,11 +1,12 @@
 import { AcademicServiceType } from "./AcademicServiceType"
 import { AwardType } from "./AwardType"
 import { AffiliationType } from "./AffiliationType"
-import { BlogPostType } from "./BlogPostType"
+import { MarkdownRemarkNodeType } from "./MarkdownRemarkType"
 import { ContactType } from './ContactType'
 import { PublicationType } from "./PublicationType"
+import { GatsbyCreatePages } from './Api'
 
 export {
   AcademicServiceType, AwardType, AffiliationType,
-  BlogPostType, ContactType, PublicationType
+  MarkdownRemarkNodeType, ContactType, PublicationType, GatsbyCreatePages
 }

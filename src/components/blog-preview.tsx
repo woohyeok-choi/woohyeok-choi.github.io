@@ -1,118 +1,95 @@
 import * as React from "react"
-import { Button, Card, Label } from "semantic-ui-react"
-import { BlogPostType } from "../types"
+import { Card, Item } from "semantic-ui-react"
+import { MarkdownRemarkNodeType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
-import Carousel from "nuka-carousel"
+import { formatReadableDate } from '../utils'
 
-const BlogPreview: React.FunctionComponent<Props> = ({showControl, nShow = 1, items}) => (
-  <Carousel
-    slidesToShow={nShow}
-    cellAlign={'center'}
-    renderCenterLeftControls={ ({ previousSlide }) => {
-      if (showControl) {
-        return (
-          <Button circular={true} icon={'angle left'} onClick={previousSlide}/>
-        )
-      } else {
-        return ( undefined )
-      }
-    }}
-    renderCenterRightControls={ ({ nextSlide }) => {
-      if (showControl) {
-        return (
-          <Button circular={true} icon={'angle right'} onClick={nextSlide}/>
-        )
-      } else {
-        return (
-          undefined
-        )
-      }
-    }}
-    renderBottomCenterControls={() => <div/>}
-  >
-    {
-      items.map(item => (
-        <div style={{padding: 10}}>
-          <BlogPreviewItem data={item}/>
-        </div>
-      ))
-    }
-  </Carousel>
-)
+class BlogSeeMoreItem extends React.Component<{}, SeeMoreState> {
+  state: SeeMoreState = {
+    isHover: false
+  }
 
-const BlogPreviewItem: React.FunctionComponent<ItemProps> = ({ data }) => {
-  const { id, datetime, title, slug, description, category, tags} = data
+  onMouseEnter = () => {
+    this.setState({isHover: true})
+  }
 
-  return (
-    <Card key={id}>
-      <Card.Content>
-        <Card.Header as={"a"} href={slug}>{title}</Card.Header>
-        <Card.Meta>{datetime}</Card.Meta>
-        <Card.Description>{description}</Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <p>
-          Category: <a href={category.slug}>{category.name}</a>
-        </p>
-        <p>
-          {tags &&
-          <Label.Group>
-            {tags.map(tag => <Label size={"mini"} as='a' href={tag.slug}>{tag.name}</Label>)}
-          </Label.Group>
-          }
-        </p>
-      </Card.Content>
-    </Card>
-  )
-}
+  onMouseExit = () => {
+    this.setState({isHover: false})
+  }
 
-interface DefaultProps {
-  nShow?: number
-  showControl: boolean
-}
-
-interface Props extends DefaultProps {
-  items: Array<BlogPostType>
-}
-
-interface ItemProps {
-  data: BlogPostType
-}
-
-interface QueryResult {
-  data: {
-    posts: {
-      edges: Array<{
-        node: {
-          id: string
-          frontmatter: {
-            title?: string
-            datetime: string
-          }
-          excerpt?: string
-          fields: {
-            slug: string
-            categorySlug: {
-              name: string
-              slug: string
-            }
-            tagsSlug: Array<{
-              name: string
-              slug: string
-            }>
-          }
-        }
-      }>
-    }
+  render(): React.ReactNode {
+    const { isHover } = this.state
+    const backgroundColor = isHover ? 'rgba(27, 28, 29, 1)' : '#fff'
+    const color = isHover ? 'rgba(255,255,255,.9)' : 'rgba(0,0,0,.85)'
+    return (
+      <Card key={'see-more'}
+            href={'./blog'}
+            style={{width: '100%', backgroundColor}}
+            onMouseEnter ={this.onMouseEnter}
+            onMouseLeave={this.onMouseExit}
+      >
+        <Card.Content>
+          <Card.Header textAlign={'center'} style={{color}}>
+            Read all posts
+          </Card.Header>
+        </Card.Content>
+      </Card>
+    )
   }
 }
 
-export default (props: DefaultProps) => {
-  const { data } : QueryResult = useStaticQuery(graphql`
+
+class BlogPreviewItem extends React.Component<ItemProps> {
+
+  render(): React.ReactNode {
+    const { data } = this.props
+    const { node } = data
+    const { id, frontmatter, fields, excerpt } = node
+    const { title, date, preview } = frontmatter
+    const { slug } = fields
+
+    return (
+      <Card key={id} as={'a'} style={{width: '100%'}} href={slug.origin}>
+        <Card.Content>
+          <Item.Group>
+          <Item>
+            {
+              preview && <Item.Image size={'small'} src={preview.childImageSharp.resize.src}/>
+            }
+            <Item.Content>
+              <Item.Header>{title}</Item.Header>
+              <Item.Meta>{formatReadableDate(date)}</Item.Meta>
+              <Item.Description>{excerpt}</Item.Description>
+            </Item.Content>
+          </Item>
+          </Item.Group>
+        </Card.Content>
+      </Card>
+    )
+  }
+}
+
+
+interface SeeMoreState {
+  isHover: boolean
+}
+
+interface ItemProps {
+  data: MarkdownRemarkNodeType
+}
+
+interface QueryResult {
+  posts: {
+    edges: Array<MarkdownRemarkNodeType>
+  }
+}
+
+export default () => {
+  const { posts } : QueryResult = useStaticQuery(graphql`
     query {
       posts: allMarkdownRemark(
         sort: {
-          fields: [frontmatter___date, frontmatter___time]
+          fields: frontmatter___date
           order: DESC
         }
         filter: {
@@ -129,16 +106,25 @@ export default (props: DefaultProps) => {
             id
             frontmatter {
               title
-              datetime
+              date
+              preview {
+                childImageSharp {
+                  resize(height: 150, width: 150, cropFocus: CENTER) {
+                    src
+                  }
+                }
+              }
             }
-            excerpt
+            excerpt(pruneLength: 750)
             fields {
-              postSlug
-              categorySlug {
+              slug {
+                origin
+              }
+              category {
                 name
                 slug
               }
-              tagsSlug {
+              tags {
                 name
                 slug
               }
@@ -149,19 +135,10 @@ export default (props: DefaultProps) => {
     }`
   )
   return (
-    <BlogPreview items={data.posts.edges.map(
-      ({ node }) => ({
-        id: node.id,
-        datetime: node.frontmatter.datetime,
-        title: node.frontmatter.title,
-        description: node.excerpt,
-        path: node.fields.postSlug,
-        category: {
-          name: node.fields.categorySlug.name,
-          path: node.fields.categorySlug.slug,
-        },
-        tags: node.fields.tagsSlug.map(item => ({ name: item.name, path: item.slug })),
-      }),
-    )} {...props}/>
+    <Card.Group>
+      {
+        [...posts.edges.map(item => <BlogPreviewItem data={item}/>), <BlogSeeMoreItem/>]
+      }
+    </Card.Group>
   )
 }

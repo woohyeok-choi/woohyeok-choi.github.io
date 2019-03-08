@@ -4,4 +4,5 @@ export interface AwardType {
   organization: string
   award: string
   description?: string
+  url?: string
 }

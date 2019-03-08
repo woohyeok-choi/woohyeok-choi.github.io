@@ -31,19 +31,17 @@ interface Props {
 }
 
 interface QueryResult {
-  data: {
-    affiliations: {
-      edges: Array<{
-        node: AffiliationType
-      }>
-    }
+  affiliations: {
+    edges: Array<{
+      node: AffiliationType
+    }>
   }
 }
 
 export default () => {
-  const { data } : QueryResult = useStaticQuery(graphql`
+  const { affiliations } : QueryResult = useStaticQuery(graphql`
     query {
-      affiliations: allAffiliationsCsv(
+      affiliations: allAchievementXlsxAffiliations (
         sort: {
           fields: date
           order: DESC
@@ -61,6 +59,6 @@ export default () => {
     }`
   )
   return (
-    <Affiliations items={data.affiliations.edges.map(({ node }) => node)}/>
+    <Affiliations items={affiliations.edges.map(({ node }) => node)}/>
   )
 }

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Grid, Image, Label } from "semantic-ui-react"
+import { Grid, Image, Item, Label } from "semantic-ui-react"
 import { ContactType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
 
@@ -7,23 +7,23 @@ const About: React.FunctionComponent<Props> = ({
   content, contacts, imagePath
 }) => {
   return (
-    <Grid columns={2}>
-      <Grid.Row>
-        <Grid.Column width={4}>
-          <Image src={imagePath} rounded size={'medium'} verticalAlign={'top'}/>
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <p>
+    <Item.Group>
+      <Item>
+        <Item.Image size={'medium'} src={imagePath}/>
+        <Item.Content verticalAlign={'middle'}>
+          <Item.Description style={{color: 'white', fontSize: '1.1em', lineHeight: '2.0em'}}>
             {content}
-          </p>
-          <p style={{position: 'absolute', bottom: '0'}}>
-            {contacts.map(contact =>
-              <Label key={contact.id} as={'a'} content={contact.name} icon={contact.icon} href={contact.url} target={'_blank'}/>
-            )}
-          </p>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+          </Item.Description>
+          <Item.Extra>
+            <p style={{marginTop: '15px'}}>
+              {contacts.map(contact =>
+                <Label key={contact.id} as={'a'} content={contact.name} icon={contact.icon} href={contact.url} target={'_blank'}/>
+              )}
+            </p>
+          </Item.Extra>
+        </Item.Content>
+      </Item>
+    </Item.Group>
   )
 }
 
@@ -37,19 +37,18 @@ interface Props extends DefaultProps{
 }
 
 interface QueryResult {
-  data: {
-    contacts: {
-      edges: Array<{
-        node: ContactType
-      }>
-    }
+  contacts: {
+    edges: Array<{
+      node: ContactType
+    }>
   }
+
 }
 
 export default (props: DefaultProps) => {
-  const { data } : QueryResult = useStaticQuery(graphql`
+  const { contacts } : QueryResult = useStaticQuery(graphql`
     query {
-      contacts: allContactsCsv {
+      contacts: allAchievementXlsxContacts {
         edges {
           node {
             id
@@ -62,6 +61,6 @@ export default (props: DefaultProps) => {
     }`
   )
   return (
-    <About contacts={data.contacts.edges.map(({ node }) => node)} {...props}/>
+    <About contacts={contacts.edges.map(({ node }) => node)} {...props}/>
   )
 }

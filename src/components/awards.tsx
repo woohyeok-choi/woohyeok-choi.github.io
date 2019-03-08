@@ -2,6 +2,7 @@ import * as React from "react"
 import { Item } from "semantic-ui-react"
 import { AwardType } from "../types"
 import { graphql, useStaticQuery } from "gatsby"
+import LinkedSpan from "./linked-span"
 
 const Awards: React.FunctionComponent<Props> = ({
   items
@@ -9,7 +10,7 @@ const Awards: React.FunctionComponent<Props> = ({
   return (
     <Item.Group divided>
       {
-        items.map(item => <AwardItem data={item}/>)
+        items.map(item => <AwardItem data={item} key={item.id}/>)
       }
     </Item.Group>
   )
@@ -18,10 +19,10 @@ const Awards: React.FunctionComponent<Props> = ({
 const AwardItem: React.FunctionComponent<ItemProps> = ({
    data
 }) => {
-  const {id, year, organization, award, description} = data
+  const { year, organization, award, description, url } = data
 
   return (
-    <Item key={id}>
+    <Item>
       <Item.Content>
         <Item.Header>
           {award}
@@ -30,7 +31,12 @@ const AwardItem: React.FunctionComponent<ItemProps> = ({
           {year}. {organization}
         </Item.Meta>
         <Item.Description>
-          {description}
+          <p>
+            {description}
+          </p>
+          <p>
+            { url && <a href={url} target={'_blank'}><LinkedSpan inverted={false} children={'LINK'}/></a>}
+          </p>
         </Item.Description>
       </Item.Content>
     </Item>
@@ -46,18 +52,17 @@ interface Props {
 }
 
 interface QueryResult {
-  data: {
-    awards: {
-      edges: Array<{
-        node: AwardType
-      }>
-    }
+  awards: {
+    edges: Array<{
+      node: AwardType
+    }>
   }
+
 }
 export default () => {
-  const { data } : QueryResult = useStaticQuery(graphql`
+  const { awards } : QueryResult = useStaticQuery(graphql`
     query {
-      awards: allAwardsCsv(
+      awards: allAchievementXlsxAwards (
         sort: {
           fields: date
           order: DESC
@@ -70,12 +75,13 @@ export default () => {
             organization
             award
             description
+            url
           }
         }
       }
     }`
   )
   return (
-    <Awards items={data.awards.edges.map(({ node }) => node)}/>
+    <Awards items={awards.edges.map(({ node }) => node)}/>
   )
 }

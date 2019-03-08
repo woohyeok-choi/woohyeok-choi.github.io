@@ -30,19 +30,17 @@ interface Props {
 }
 
 interface QueryResult {
-  data: {
-    academicServices: {
-      edges: Array<{
-        node: AcademicServiceType
-      }>
-    }
+  academicServices: {
+    edges: Array<{
+      node: AcademicServiceType
+    }>
   }
 }
 
 export default () => {
-  const { data } : QueryResult = useStaticQuery(graphql`
+  const { academicServices } : QueryResult = useStaticQuery(graphql`
     query {
-      academicServices: allAcademicServicesCsv (
+      academicServices: allAchievementXlsxAcademicServices (
         sort: {
           fields: date
           order: DESC
@@ -60,6 +58,6 @@ export default () => {
     }`
   )
   return (
-    <AcademicServices items={data.academicServices.edges.map(({ node }) => node)}/>
+    <AcademicServices items={academicServices.edges.map(({ node }) => node)}/>
   )
 }

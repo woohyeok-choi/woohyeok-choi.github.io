@@ -10,9 +10,30 @@ export interface PublicationType {
   issue?: string
   pages?: string
   doi?: string
-  acm?: string
-  paper?: string
-  slide?: string
-  video?: string
+  bibtexFile?: {
+    name?: string
+    publicURL?: string
+  }
+  paperFile?: {
+    name?: string
+    publicURL?: string
+  }
+  posterFile?: {
+    name?: string
+    publicURL?: string
+  }
+  slideFile?: {
+    name?: string
+    publicURL?: string
+  }
+  videoFile?: {
+    name?: string
+    publicURL?: string
+  }
+  appendixFile?: {
+    name?: string
+    publicURL?: string
+  }
+  videoLink?: string
   github?: string
 }

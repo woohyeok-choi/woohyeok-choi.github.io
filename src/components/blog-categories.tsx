@@ -1,24 +1,16 @@
-import * as React from 'react'
+import * as React from "react"
 import { List } from "semantic-ui-react"
-import { graphql, StaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
+import { formatPagePath } from "../utils"
 
-const BlogCategories: React.FunctionComponent<Props> = ({
-  indexLink, items, activeCategory = 'All'
-}) => {
+const BlogCategories: React.FunctionComponent<Props> = ({ items }) => {
   return (
-    <List link>
-      <List.Item as={'a'} href={indexLink} active={activeCategory === 'All'}>
-        <List.Icon name={'folder'}/>
-          All (
-          {
-            items.map(category => category.count).reduce((acc, curVal) => acc + curVal)
-          })
-      </List.Item>
+    <List link bulleted>
       {
-        items.map(item =>
-          <List.Item as={'a'} href={item.link} active={activeCategory === item.category}>
-            <List.Icon name={'folder'}/>
-            {item.category} ({item.count})
+        items.map(({ category, link, count }) =>
+          <List.Item key={category}
+                     href={link}>
+            {category} ({count})
           </List.Item>
         )
       }
@@ -26,33 +18,49 @@ const BlogCategories: React.FunctionComponent<Props> = ({
   )
 }
 
-export default (props: DefaultProps) => (
-  <StaticQuery query={graphql`
+export default () => {
+  const { categories }: QueryResult = useStaticQuery(graphql`
     query {
-      blogCategories: allMarkdownRemark {
+      categories: allMarkdownRemark {
         group(field: frontmatter___category) {
           fieldValue
           totalCount
         }
+        totalCount
       }
-    }`
-  } render={ (data) =>
-    <BlogCategories items={
-      data.blogCategories.group.map(datum => ({
-        category: datum.fieldValue,
-        count: datum.totalCount,
-        link: 'asdf'
-      }))
-    } {...props} />
-  }/>
-)
+    }`,
+  )
+  const { totalCount, group } = categories
+  const items = [
+    {
+      category: "All",
+      count: totalCount,
+      link: formatPagePath(0, "none"),
+    },
+    ...group.map(({ fieldValue, totalCount }) => ({
+      category: fieldValue,
+      count: totalCount,
+      link: formatPagePath(0, "category", fieldValue),
+    })),
+  ]
 
-interface DefaultProps {
-  indexLink?: string
-  activeCategory?: string
+  return (
+    <BlogCategories items={items} />
+  )
 }
 
-interface Props extends DefaultProps {
+interface QueryResult {
+  categories: {
+    group: Array<{
+      fieldValue
+      totalCount
+    }>
+    totalCount: number
+  }
+}
+
+
+interface Props {
   items: Array<{
     category: string
     count?: number
