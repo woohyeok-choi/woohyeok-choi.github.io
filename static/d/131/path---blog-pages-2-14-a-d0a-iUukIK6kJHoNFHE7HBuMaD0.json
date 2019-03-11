@@ -1,0 +1,1 @@
+{"errors":[{"message":"Cannot read property 'node' of undefined","locations":[{"line":6,"column":3}],"path":["posts"]}],"data":{"posts":null},"pageContext":{"limit":5,"skip":5,"currentPage":2,"totalPage":2,"param":"*","totalCount":6}}
