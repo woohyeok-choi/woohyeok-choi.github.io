@@ -1,18 +1,17 @@
 import * as React from "react"
 import { Card, Image, Label, Placeholder } from "semantic-ui-react"
-import { MarkdownRemarkNodeType } from "../types"
+import { MarkdownRemarkNodeType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
-import Carousel from "./carousel"
+import Carousel from "../common/carousel"
 
 const ResearchPreviewItem: React.FunctionComponent<ItemProps> = ({data}) => {
   const { node } = data
   const { id, frontmatter, fields} = node
   const { title, description, preview } = frontmatter
   const { slug } = fields
-  console.log(preview)
 
   return (
-    <Card key={id} style={{width: '100%'}} as={'a'} href={slug.origin}>
+    <Card key={id} style={{width: '100%'}} as={'a'} href={slug}>
       {preview ? <Image src={preview.childImageSharp.resize.src} style={{marginBottom: 0}}/> :
         <Placeholder>
           <Placeholder.Image rectangular/>
@@ -71,9 +70,7 @@ export default () => {
               }
             }
             fields {
-              slug {
-                origin
-              }
+              slug
               category {
                 name
                 slug

@@ -20,41 +20,45 @@ interface QueryResult {
   }
 }
 
+interface SiblingPage {
+  slug: string
+  prevPost?: {
+    title: string
+    slug: string
+  }
+  nextPost?: {
+    title: string
+    slug: string
+  }
+}
+
 const generatePagesWithSiblingPages = (
-  edges: Array<MarkdownRemarkNodeType>, totalCount: number, alias: boolean
-) => edges.map(({ node }, index, arr) => {
+  edges: Array<MarkdownRemarkNodeType>, totalCount: number
+) : Array<SiblingPage> => edges.map(({ node }, index, arr) => {
 
   const prevIndex = Math.max(index - 1, 0)
   const nextIndex = Math.min(index + 1, totalCount - 1)
 
   const prevPost = prevIndex === index ? undefined : {
     title: arr[prevIndex].node.frontmatter.title,
-    slug: alias ? arr[prevIndex].node.fields.slug.alias : arr[prevIndex].node.fields.slug.origin,
+    slug: arr[prevIndex].node.fields.slug
   }
 
   const nextPost = nextIndex === index ? undefined : {
     title: arr[nextIndex].node.frontmatter.title,
-    slug: alias ? arr[nextIndex].node.fields.slug.alias : arr[nextIndex].node.fields.slug.origin,
+    slug: arr[nextIndex].node.fields.slug
   }
 
-  const currentSlug = alias ? node.fields.slug.alias : node.fields.slug.origin
-  const postId = node.id
-  return (
-    {
-      path: currentSlug,
-      component: resolve(__dirname, "./src/templates/blog-post.tsx"),
-      context: {
-        postId,
-        alias,
-        prevPost,
-        nextPost,
-      }
-    }
-  )
+  const slug = node.fields.slug
+  return {
+    slug,
+    prevPost,
+    nextPost
+  }
 })
 
 const generatePagination = (
-  totalCount: number, postsPerPage: number, paramType: string, param?: string
+  totalCount: number, postsPerPage: number, paramType: 'category' | 'tag', param?: string
 ) => {
   const nPages = Math.ceil(totalCount / postsPerPage)
 
@@ -65,23 +69,20 @@ const generatePagination = (
     let component
 
     if (paramType === 'category') {
-      component = resolve(__dirname, "./src/templates/blog-list-category.tsx")
+      component = resolve(__dirname, "./src/templates/blog-list-category-page.tsx")
     } else if (paramType === 'tag') {
-      component = resolve(__dirname, "./src/templates/blog-list-tag.tsx")
-    } else {
-      component = resolve(__dirname, './src/templates/blog-list.tsx')
+      component = resolve(__dirname, "./src/templates/blog-list-tag-page.tsx")
     }
-
     return {
       path: pagePath,
       component,
       context: {
-        totalCount,
         limit: postsPerPage,
         skip: index * postsPerPage,
         currentPage: index + 1,
         totalPage: nPages,
-        param
+        param,
+        totalCount
       }
     }
   })
@@ -101,10 +102,7 @@ export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreat
               title
             }
             fields {
-              slug {
-                origin
-                alias
-              }
+              slug
               category {
                 name
                 slug
@@ -127,10 +125,7 @@ export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreat
               title
             }
             fields {
-              slug {
-                origin
-                alias
-              }
+              slug
               category {
                 name
                 slug
@@ -151,10 +146,7 @@ export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreat
             title
           }
           fields {
-            slug {
-              origin
-              alias
-            }
+            slug
             category {
               name
               slug
@@ -174,22 +166,24 @@ export const createPages: GatsbyCreatePages = async ({ graphql, boundActionCreat
    */
   
   const { posts } = data
-  const { edges, totalCount, groupByCategory, groupByTag } = posts
+  const { totalCount, groupByCategory, groupByTag } = posts
   const postsPerPage = 5
-  
-  generatePagesWithSiblingPages(
-    edges,
-    totalCount,
-    false
-  ).forEach(value => createPage(value))
-
-  generatePagination(totalCount, postsPerPage, 'none', undefined).forEach(value => createPage(value))
 
   groupByCategory.forEach(({ edges, totalCount }) => {
-    generatePagesWithSiblingPages(
-      edges, totalCount, true
-    ).forEach(value => createPage(value))
+    generatePagesWithSiblingPages(edges, totalCount).forEach(({ slug, prevPost, nextPost}) => {
+      createPage({
+        path: slug,
+        component: resolve(__dirname, './src/templates/blog-post-page.tsx'),
+        context: {
+          slug,
+          prevPost,
+          nextPost
+        }
+      })
+    })
   })
+
+  generatePagination(totalCount, postsPerPage, 'category', "*").forEach(value => createPage(value))
 
   groupByCategory.forEach(({ totalCount, fieldValue }) => {
     generatePagination(totalCount, postsPerPage, 'category', fieldValue).forEach(value => createPage(value))

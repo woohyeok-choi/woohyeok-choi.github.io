@@ -21,10 +21,7 @@ export interface MarkdownRemarkNodeType {
       }
     }
     fields?: {
-      slug?: {
-        origin?: string
-        alias?: string
-      }
+      slug?: string
       category?: {
         name?: string
         slug?: string

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Grid, Image, Item, Label } from "semantic-ui-react"
-import { ContactType } from "../types"
+import { ContactType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const About: React.FunctionComponent<Props> = ({
@@ -15,11 +15,11 @@ const About: React.FunctionComponent<Props> = ({
             {content}
           </Item.Description>
           <Item.Extra>
-            <p style={{marginTop: '15px'}}>
+            <Label.Group style={{marginTop: '15px'}}>
               {contacts.map(contact =>
                 <Label key={contact.id} as={'a'} content={contact.name} icon={contact.icon} href={contact.url} target={'_blank'}/>
               )}
-            </p>
+            </Label.Group>
           </Item.Extra>
         </Item.Content>
       </Item>

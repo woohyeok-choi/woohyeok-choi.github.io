@@ -2,7 +2,6 @@
 
 require('source-map-support').install()
 require('ts-node').register({files: true})
-const defiant = require('defiant.js')
 
 const { formatPostPath, formatBlogTagPath, formatBlogCategoryPath } = require('./src/utils')
 
@@ -17,10 +16,7 @@ exports.onCreateNode = ({ node, actions }) => {
     createNodeField({
       node,
       name: 'slug',
-      value: {
-        origin: formatPostPath(date, title, 'none', null),
-        alias: formatPostPath(date, title, 'category', category),
-      }
+      value: formatPostPath(date, title, 'category', category),
     })
 
     createNodeField({

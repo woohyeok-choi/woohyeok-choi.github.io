@@ -31,12 +31,6 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-typography`,
-      options: {
-        pathToConfigModule: `src/typography`,
-      },
-    },
-    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
@@ -46,11 +40,14 @@ module.exports = {
               maxWidth: 590,
             },
           },
-          "gatsby-remark-copy-linked-files",
           {
-            resolve: `gatsby-remark-classes`,
+            resolve: `gatsby-remark-add-classes`,
+            options: {
+              paragraph: 'markdown-paragraph'
+            }
+          },
+          "gatsby-remark-copy-linked-files",
 
-          }
         ]
       }
     },

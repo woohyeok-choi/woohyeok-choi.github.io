@@ -1,14 +1,14 @@
 import * as React from 'react'
-import Layout from "../components/layout"
-import BlogContent from '../components/blog-content'
+import Layout from "../components/common/layout"
+import BlogContent from '../components/blog/main-post-page'
 import { MarkdownRemarkNodeType } from "../types"
 import { graphql } from "gatsby"
 
 export default ({ data, pageContext } : Props) => {
-
+  const { nextPost, prevPost } = pageContext
   return (
     <Layout>
-      <BlogContent data={data}/>
+      <BlogContent data={data} nextPost={nextPost} prevPost={prevPost}/>
     </Layout>
   )
 }
@@ -16,8 +16,6 @@ export default ({ data, pageContext } : Props) => {
 interface Props {
   data: MarkdownRemarkNodeType
   pageContext: {
-    postId?: string
-    alias?: boolean
     nextPost?: {
       title?: string
       slug?: string
@@ -30,9 +28,11 @@ interface Props {
 }
 
 export const query = graphql`
-  query getPosts($postId: String!) {
-    node: markdownRemark(id: {
-      eq: $postId
+  query getPosts($slug: String!) {
+    node: markdownRemark(fields: {
+      slug: {
+        eq: $slug
+      }
     }) {
       html
       frontmatter {

@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Item } from "semantic-ui-react"
-import { AwardType } from "../types"
+import { AwardType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
-import LinkedSpan from "./linked-span"
+import LinkedSpan from "../common/linked-span"
 
 const Awards: React.FunctionComponent<Props> = ({
   items

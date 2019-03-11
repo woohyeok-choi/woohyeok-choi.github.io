@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Label } from "semantic-ui-react"
 import { graphql, useStaticQuery } from "gatsby"
-import { formatPagePath } from "../utils"
+import { formatPagePath } from "../../utils"
 
 const BlogTags: React.FunctionComponent<Props> = ({ items }) => {
   return (
@@ -17,7 +17,7 @@ const BlogTags: React.FunctionComponent<Props> = ({ items }) => {
   )
 }
 
-export default () => {
+export default ({ limit = 10 }: DefaultProps) => {
   const { tags }: QueryResult = useStaticQuery(graphql`
     query {
       tags: allMarkdownRemark {
@@ -28,13 +28,19 @@ export default () => {
       }
     }`,
   )
+
+  const { group } = tags
+
   return (
     <BlogTags items={
-      tags.group.map(({ fieldValue, totalCount }) => ({
-        tag: fieldValue,
-        count: totalCount,
-        link: formatPagePath(0, "tag", fieldValue),
-      }))
+      group
+        .sort(({totalCount: a}, {totalCount: b}) => b - a)
+        .slice(0, limit)
+        .map(({ fieldValue, totalCount }) => ({
+          tag: fieldValue,
+          count: totalCount,
+          link: formatPagePath(0, "tag", fieldValue),
+        }))
     }/>
   )
 }
@@ -49,7 +55,11 @@ interface QueryResult {
   }
 }
 
-interface Props {
+interface DefaultProps {
+  limit?: number
+}
+
+interface Props extends DefaultProps {
   items: Array<{
     tag: string
     count: number

@@ -55,7 +55,7 @@
     "typescript": "^3.3.3333",
     "typography": "^0.16.18",
     "typography-theme-moraga": "^0.16.18",
-    "unist-util-find": "^1.0.1"
+    "unist-util-visit": "^1.4.0"
   },
   "devDependencies": {
     "prettier": "^1.16.4"

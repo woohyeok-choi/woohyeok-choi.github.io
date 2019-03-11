@@ -1,9 +1,9 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
 import { graphql, useStaticQuery } from "gatsby"
-import { formatPagePath } from "../utils"
+import { formatPagePath } from "../../utils"
 
-const BlogCategories: React.FunctionComponent<Props> = ({ items }) => {
+const Categories: React.FunctionComponent<Props> = ({ items }) => {
   return (
     <List link bulleted>
       {
@@ -35,7 +35,7 @@ export default () => {
     {
       category: "All",
       count: totalCount,
-      link: formatPagePath(0, "none"),
+      link: formatPagePath(0, "category"),
     },
     ...group.map(({ fieldValue, totalCount }) => ({
       category: fieldValue,
@@ -45,7 +45,7 @@ export default () => {
   ]
 
   return (
-    <BlogCategories items={items} />
+    <Categories items={items} />
   )
 }
 

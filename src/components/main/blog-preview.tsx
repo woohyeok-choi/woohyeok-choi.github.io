@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Card, Item } from "semantic-ui-react"
-import { MarkdownRemarkNodeType } from "../types"
+import { MarkdownRemarkNodeType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
-import { formatReadableDate } from '../utils'
+import { formatReadableDate } from '../../utils'
 
 class BlogSeeMoreItem extends React.Component<{}, SeeMoreState> {
   state: SeeMoreState = {
@@ -49,7 +49,7 @@ class BlogPreviewItem extends React.Component<ItemProps> {
     const { slug } = fields
 
     return (
-      <Card key={id} as={'a'} style={{width: '100%'}} href={slug.origin}>
+      <Card key={id} as={'a'} style={{width: '100%'}} href={slug}>
         <Card.Content>
           <Item.Group>
           <Item>
@@ -117,9 +117,7 @@ export default () => {
             }
             excerpt(pruneLength: 750)
             fields {
-              slug {
-                origin
-              }
+              slug
               category {
                 name
                 slug

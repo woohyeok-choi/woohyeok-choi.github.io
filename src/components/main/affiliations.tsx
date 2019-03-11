@@ -1,9 +1,9 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
-import { AcademicServiceType } from "../types"
+import { AffiliationType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
 
-const AcademicServices: React.FunctionComponent<Props> = ({
+const Affiliations: React.FunctionComponent<Props> = ({
   items
 }) => {
   return (
@@ -13,7 +13,7 @@ const AcademicServices: React.FunctionComponent<Props> = ({
           <List.Item key={item.id}>
             <List.Content>
               <List.Header>
-                {item.year}. {item.service}
+                {item.year}. {item.position}
               </List.Header>
               <List.Description>
                 {item.organization}
@@ -25,22 +25,23 @@ const AcademicServices: React.FunctionComponent<Props> = ({
   )
 }
 
+
 interface Props {
-  items: Array<AcademicServiceType>
+  items: Array<AffiliationType>
 }
 
 interface QueryResult {
-  academicServices: {
+  affiliations: {
     edges: Array<{
-      node: AcademicServiceType
+      node: AffiliationType
     }>
   }
 }
 
 export default () => {
-  const { academicServices } : QueryResult = useStaticQuery(graphql`
+  const { affiliations } : QueryResult = useStaticQuery(graphql`
     query {
-      academicServices: allAchievementXlsxAcademicServices (
+      affiliations: allAchievementXlsxAffiliations (
         sort: {
           fields: date
           order: DESC
@@ -51,13 +52,13 @@ export default () => {
             id
             year
             organization
-            service
+            position
           }
         }
       }
     }`
   )
   return (
-    <AcademicServices items={academicServices.edges.map(({ node }) => node)}/>
+    <Affiliations items={affiliations.edges.map(({ node }) => node)}/>
   )
 }

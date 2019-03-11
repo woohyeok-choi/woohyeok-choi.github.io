@@ -24,14 +24,16 @@ export const formatPostPath = (date: string, title: string, paramType: ParamType
   return `${basePath}/posts/${formatUrlDate(date)}-${changeCase.paramCase(title)}`
 }
 
-export const formatPagePath = (index: number = 0, paramType: ParamType | string, param?: string | null) : string => {
+export const formatPagePath = (index: number = 0, paramType: 'category' | 'tag', param?: string | null) : string => {
   let basePath = "/blog"
   const paramPath = param ? changeCase.paramCase(param) : ""
 
-  if (paramType === "category") {
-    basePath = `/blog/categories/${paramPath}`
-  } else if (paramType === "tag") {
-    basePath = `/blog/tags/${paramPath}`
+  if (paramPath) {
+    if (paramType === "category") {
+      basePath = `/blog/categories/${paramPath}`
+    } else if (paramType === "tag") {
+      basePath = `/blog/tags/${paramPath}`
+    }
   }
 
   if (index !== 0) {
