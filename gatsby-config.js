@@ -5,6 +5,7 @@ module.exports = {
     title: `Choi, Woohyeok`,
     description: `Choi, Woohyeok's personal website and blog.`,
     author: `Choi, Woohyeok (woohyeok.choi@kaist.ac.kr)`,
+    disqusShortname: 'choi-woohyeok'
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

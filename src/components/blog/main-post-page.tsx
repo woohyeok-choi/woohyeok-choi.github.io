@@ -2,15 +2,26 @@ import * as React from "react"
 import { MarkdownRemarkNodeType } from "../../types"
 import { Label, Header, Segment, Grid } from "semantic-ui-react"
 import BlogContainer from './container'
+import Disqus from '../common/disqus'
 import { formatReadableDate } from '../../utils'
 import LinkedSpan from "../common/linked-span"
+import { graphql, useStaticQuery } from "gatsby"
 
-export default ( { data, prevPost, nextPost } : Props) => {
+export default ( { data, prevPost, nextPost, address } : Props) => {
   const { node } = data
   const { frontmatter, html, fields } = node
   const { title, date } = frontmatter
-  const { category, tags } = fields
-
+  const { category, tags, slug } = fields
+  const { site }: QueryResult = useStaticQuery(graphql`
+    {
+      site {
+        siteMetadata {
+          disqusShortname
+        }
+      }
+    }
+  `)
+  const { siteMetadata } = site
   return (
     <BlogContainer>
       <Header as={'h1'} dividing>
@@ -35,7 +46,17 @@ export default ( { data, prevPost, nextPost } : Props) => {
         </Label.Group>
       </Segment>
       }
-      <Grid columns={2} as={Segment} vertical stackable>
+      {
+        siteMetadata.disqusShortname &&
+        <Segment vertical padded={'very'}>
+          <Disqus shortName={siteMetadata.disqusShortname}
+                  title={title}
+                  identifier={slug}
+                  url={address}
+          />
+        </Segment>
+      }
+      <Grid columns={2} as={Segment} vertical stackable padded>
         <Grid.Column textAlign={'left'}>
           { prevPost &&
             <Header as={'h3'}>
@@ -65,8 +86,17 @@ export default ( { data, prevPost, nextPost } : Props) => {
   )
 }
 
+interface QueryResult {
+  site: {
+    siteMetadata: {
+      disqusShortname?: string
+    }
+  }
+}
+
 interface Props {
   data: MarkdownRemarkNodeType
+  address: string
   prevPost?: {
     title?: string
     slug?: string

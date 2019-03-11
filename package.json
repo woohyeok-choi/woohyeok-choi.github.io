@@ -18,6 +18,7 @@
     "@types/semantic-ui": "^2.2.7",
     "change-case": "^3.1.0",
     "defiant.js": "^2.2.3",
+    "disqus-react": "^1.0.5",
     "gatsby": "^2.1.18",
     "gatsby-image": "^2.0.30",
     "gatsby-plugin-catch-links": "^2.0.12",
@@ -66,7 +67,7 @@
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
-    "serve": "gatsby serve",
+    "serve": "gatsby serve -H 0.0.0.0 -p 80",
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\"",
     "deploy": "gatsby build && gh-pages -d public -b master"
   }

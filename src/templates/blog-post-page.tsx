@@ -5,7 +5,7 @@ import { MarkdownRemarkNodeType } from "../types"
 import { graphql } from "gatsby"
 import SEO from "../components/common/seo"
 
-export default ({ data, pageContext } : Props) => {
+export default ( { data, pageContext, location } : Props) => {
   const { node } = data
   const { frontmatter, fields, excerpt } = node
   const { title, lang } = frontmatter
@@ -18,13 +18,17 @@ export default ({ data, pageContext } : Props) => {
            lang={ lang }
            keywords={[category.name, ...tags.map(({name}) => name)]}
            description={ excerpt }/>
-      <BlogContent data={data} nextPost={nextPost} prevPost={prevPost}/>
+      <BlogContent data={data} nextPost={nextPost} prevPost={prevPost} address={location.href}/>
     </Layout>
   )
 }
 
+
 interface Props {
   data: MarkdownRemarkNodeType
+  location?: {
+    href: string
+  }
   pageContext: {
     nextPost?: {
       title?: string
@@ -52,6 +56,7 @@ export const query = graphql`
         lang
       }
       fields {
+        slug
         category {
           name
           slug
