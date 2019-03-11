@@ -1,14 +1,20 @@
-import React from "react"
-
-import Layout2 from "../components/layout2"
+import * as React from "react"
 import SEO from "../components/common/seo"
+import Layout from "../components/common/layout"
+import { Container, Header, Segment } from "semantic-ui-react"
+import LinkedSpan from "../components/common/linked-span"
 
-const NotFoundPage = () => (
-  <Layout2>
-    <SEO title="404: Not found" />
-    <h1>NOT FOUND</h1>
-    <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
-  </Layout2>
+export default () => (
+  <Layout>
+    <SEO title="Page Not found"/>
+    <Segment vertical padded style={{marginLeft: '1em'}}>
+      <Header as={'h1'} content={'Page Not found'}/>
+      <Header as={'h3'}>
+        <a href={'/'}>
+          <LinkedSpan inverted={false}>Return to main</LinkedSpan>
+        </a>
+      </Header>
+    </Segment>
+  </Layout>
 )
 
-export default NotFoundPage

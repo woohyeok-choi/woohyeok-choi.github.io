@@ -12,6 +12,7 @@ export interface MarkdownRemarkNodeType {
       description?: string
       category?: string
       tags?: Array<string>
+      lang?: string
       preview: {
         childImageSharp: {
           fluid?: GatsbyImage

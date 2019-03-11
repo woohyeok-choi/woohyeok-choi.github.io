@@ -3,6 +3,7 @@ date: 2019-03-08 15:00
 title: How to build this web site
 description: 
 category: Development
+lang: en
 tags:
     - React
     - GatsbyJs

@@ -4,11 +4,14 @@ import Layout from "../components/common/layout"
 import BlogList from "../components/blog/main-post-list"
 import { MarkdownRemarkNodeType } from "../types"
 import { formatPagePath } from "../utils"
+import SEO from "../components/common/seo"
 
 export default ({ data, pageContext } : Props) => {
   const { param, currentPage, totalPage, totalCount } = pageContext
   return (
     <Layout>
+      <SEO title={ param === '*' ? 'Blog' : `Tag: ${param}` }
+           description={ param === '*' ? 'List of all posts' : `List of posts tagged with ${param}`}/>
       <BlogList items={data.posts.edges}
                 header={param === '*' ? undefined:
                   <div>

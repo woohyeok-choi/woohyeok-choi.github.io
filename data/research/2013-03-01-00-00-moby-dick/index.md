@@ -3,6 +3,7 @@ date: 2013-03-01
 title: Developing multi-player exertion games for underwater environment 
 description: Even though exertion-based games (or, exergame) are regarded as promising ways to promote physical activities, most of them has considered ground-based physical activities. To design exergames for water-based physical activities, there are many unique challenges, such as (1) underwater network communication, (2) swimming motion recognition, and (3) game mechanic design.   
 category: Research
+lang: en
 tags:
     - Exergame
     - Swimming

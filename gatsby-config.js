@@ -2,10 +2,9 @@ require('ts-node').register({files: true})
 
 module.exports = {
   siteMetadata: {
-    title: `Choi, Woohyeok | HCI, exertion game, mobile health intervention`,
-    description: `Choi, Woohyeok's personal website.`,
-    author: `Choi, Woohyeok`,
-    email: `woohyeok.choi@kaist.ac.kr`
+    title: `Choi, Woohyeok`,
+    description: `Choi, Woohyeok's personal website and blog.`,
+    author: `Choi, Woohyeok (woohyeok.choi@kaist.ac.kr)`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

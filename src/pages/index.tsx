@@ -1,4 +1,5 @@
 import * as React from "react"
+import SEO from "../components/common/seo"
 import { Container, Header, Segment } from "semantic-ui-react"
 import { Element } from "react-scroll"
 import About from "../components/main/about"
@@ -20,6 +21,15 @@ const menuItems = ["About", "Research", "Publications", "Awards & Honours", "Aca
 
 export default () => (
   <Layout>
+    <SEO title={'Main'}
+         keywords={[
+           'Human-computer interaction',
+           'Exertion game',
+           'Mobile health',
+           'Health intervention',
+           'Behavior change'
+         ]}
+         description={`Choi, Woohyeok's personal website presenting his research areas and achievements`}/>
     <ResponsiveContainer menuItems={menuItems}>
       <Segment inverted vertical as={Element} name={paramCase("About")} basic>
         <Container>
