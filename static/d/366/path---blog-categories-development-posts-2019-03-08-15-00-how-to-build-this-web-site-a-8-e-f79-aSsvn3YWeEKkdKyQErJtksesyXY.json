@@ -1,1 +1,0 @@
-{"errors":[{"message":"Variable \"$postId\" of required type \"String!\" was not provided.","locations":[{"line":2,"column":3}]}],"pageContext":{"slug":"/blog/categories/development/posts/2019-03-08-15-00-how-to-build-this-web-site"}}
