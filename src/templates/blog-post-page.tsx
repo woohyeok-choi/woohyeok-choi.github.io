@@ -48,6 +48,7 @@ export const query = graphql`
         eq: $slug
       }
     }) {
+      id
       html
       excerpt(pruneLength: 140)
       frontmatter {

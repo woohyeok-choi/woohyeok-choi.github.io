@@ -9,7 +9,7 @@ import { graphql, useStaticQuery } from "gatsby"
 
 export default ( { data, prevPost, nextPost, address } : Props) => {
   const { node } = data
-  const { frontmatter, html, fields } = node
+  const { id, frontmatter, html, fields } = node
   const { title, date } = frontmatter
   const { category, tags, slug } = fields
   const { site }: QueryResult = useStaticQuery(graphql`
@@ -51,7 +51,7 @@ export default ( { data, prevPost, nextPost, address } : Props) => {
         <Segment vertical padded={'very'}>
           <Disqus shortName={siteMetadata.disqusShortname}
                   title={title}
-                  identifier={slug}
+                  identifier={id}
                   url={address}
           />
         </Segment>
