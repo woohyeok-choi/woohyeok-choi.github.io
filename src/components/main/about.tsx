@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Grid, Image, Item, Label } from "semantic-ui-react"
+import { Grid, Icon, Image, Item, Label } from "semantic-ui-react"
 import { ContactType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
 
@@ -19,6 +19,7 @@ const About: React.FunctionComponent<Props> = ({
               {contacts.map(contact =>
                 <Label key={contact.id} as={'a'} content={contact.name} icon={contact.icon} href={contact.url} target={'_blank'}/>
               )}
+              <Label key={'google-scholar'} as={'a'}  target={'_blank'} href={'https://scholar.google.co.kr/citations?hl=en&view_op=list_works&gmla=AJsN-F44GM-jHORGEa84LMkyToX3NgzfRpX-vtrS7ZRLswPVafM0j-Vq-6UrvPyxOFAVYUDFX9JryLwATJf08kDOKVx2vxGPwbX6iiPAZ5JM3wu-XySrjk0&user=PaIwvKYAAAAJ'}><i className="ai ai-google-scholar-square" style={{margin: '0 .75em 0 0'}}/>Google Scholar</Label>
             </Label.Group>
           </Item.Extra>
         </Item.Content>

@@ -1,5 +1,10 @@
-const visit = require('unist-util-visit')
+/**
+ * Origin source in https://github.com/chrisg86/gatsby-remark-classes
+ * gatsby-remark-classes cannot be loaded when it is installed via yarn;
+ * therefore, I copied sources into custom plugin folder.
+ */
 
+const visit = require('unist-util-visit')
 
 const addClassesToNode = (node, classes) => {
   node.data = node.data || {};

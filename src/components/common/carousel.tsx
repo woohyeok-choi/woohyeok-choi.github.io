@@ -5,7 +5,7 @@ import { Button, Responsive } from "semantic-ui-react"
 export default ({ items } : Props) => (
   <Slider
     slidesToShow={3}
-    nextArrow={<div><Button icon={'angle right'} circular/></div>}
+    nextArrow={<div style={{right: '-10'}}><Button icon={'angle right'} circular/></div>}
     prevArrow={<div><Button icon={'angle left'} circular/></div>}
     className={'slide'}
     dots={true}

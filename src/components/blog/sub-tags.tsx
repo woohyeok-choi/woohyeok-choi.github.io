@@ -10,7 +10,7 @@ const BlogTags: React.FunctionComponent<Props> = ({ items }) => {
         items.map(({ tag, link, count }) =>
           <Label key={tag} as={"a"} href={link}>
             {tag} ({count})
-          </Label>,
+          </Label>
         )
       }
     </Label.Group>

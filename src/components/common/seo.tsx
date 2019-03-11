@@ -77,6 +77,12 @@ export default ({ lang = 'en', keywords = [], title, description = ''}: Props) =
       htmlAttribute={{
         lang
       }}
+      link={[
+        {
+          rel: 'stylesheet',
+          href: 'https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css'
+        }
+      ]}
       title={title}
       titleTemplate={`%s | ${siteMetadata.title}`}
       meta={

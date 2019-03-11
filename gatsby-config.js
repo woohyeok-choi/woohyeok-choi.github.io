@@ -46,6 +46,14 @@ module.exports = {
               paragraph: 'markdown-paragraph'
             }
           },
+          {
+            resolve: `gatsby-remark-figure-caption`,
+            options: {
+              figureClassName: 'markdown-figure',
+              imageClassName: 'markdown-image',
+              captionClassName: 'markdown-caption'
+            },
+          },
           "gatsby-remark-copy-linked-files",
 
         ]

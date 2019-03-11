@@ -13,6 +13,10 @@
     transform: none;
 }
 
+.slick-next {
+    right: -10px
+}
+
 .pushable:not(body) > .ui.sidebar,
 .pushable:not(body) > .fixed,
 .pushable:not(body) > .pusher:after {

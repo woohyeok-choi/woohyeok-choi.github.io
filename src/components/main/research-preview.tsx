@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Card, Image, Label, Placeholder } from "semantic-ui-react"
+import { Card, Image, Placeholder } from "semantic-ui-react"
 import { MarkdownRemarkNodeType } from "../../types"
 import { graphql, useStaticQuery } from "gatsby"
 import Carousel from "../common/carousel"

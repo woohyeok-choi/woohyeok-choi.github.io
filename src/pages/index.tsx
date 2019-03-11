@@ -42,14 +42,14 @@ export default () => (
                                                                                                     children={"Interactive Computing Lab (ICLab)"}/></a> at <a
                   href={"https://www.kaist.ac.kr"} target={"_blank"}><LinkedSpan inverted={true}
                                                                                  children={"Korea Advanced Institute of Science and Technology (KAIST)"}/></a>.
-                  His research interest focuses on building interactive
+                  My research interest focuses on building interactive
                   applications that promote physical health, including exertion-based games, physical activity
-                  promotion at work, and mobile-based health intervention. Throughout his studies, he has had a
+                  promotion at work, and mobile-based health intervention. Throughout my studies, I have had a
                   variety of expertise: front-/back-end development, hardware prototyping, machine learning, and
                   statistical analysis.
                 </p>
                 <p>
-                  If you're interested in working with him, please contact:
+                  If you're interested in working with me, please contact:
                 </p>
               </div>
             }
