@@ -3,11 +3,6 @@ import { Responsive, Menu, Sidebar, Container } from "semantic-ui-react"
 import { Link } from "react-scroll"
 import Footer from '../common/footer'
 
-const getWidth = () => {
-  const isSSR = typeof window === 'undefined'
-
-  return isSSR ? Responsive.onlyComputer.minWidth as number : window.innerWidth
-}
 
 class DesktopContainer extends React.Component<Props, State> {
   state: State = {
@@ -22,7 +17,7 @@ class DesktopContainer extends React.Component<Props, State> {
     const { menuItems, children } = this.props
 
     return (
-      <Responsive getWidth={getWidth} minWidth={Responsive.onlyComputer.minWidth}>
+      <div className={'tablet hidden'}>
         <Menu secondary pointing fixed={"top"} inverted style={{ backgroundColor: "#1b1c1d" }}>
           <Container>
             <Menu.Item header content={"CHOI, WOOHYEOK"} style={{ fontSize: "1.5em", lineHeight: "0.1em" }}/>
@@ -46,7 +41,7 @@ class DesktopContainer extends React.Component<Props, State> {
         <div style={{ paddingTop: "3.0em" }}>
           {children}
         </div>
-      </Responsive>
+      </div>
     )
   }
 }
@@ -70,7 +65,7 @@ class MobileContainer extends React.Component<Props, State> {
     const { menuItems, children } = this.props
 
     return (
-      <Responsive getWidth={getWidth} maxWidth={Responsive.onlyTablet.maxWidth}>
+      <div className={'tablet mobile only'}>
         <Menu secondary pointing fixed={"top"} inverted style={{ backgroundColor: "#1b1c1d" }}>
           <Container>
             <Menu.Item key={"sidebar"} onClick={this.handleToggle} icon={"sidebar"}/>
@@ -81,7 +76,6 @@ class MobileContainer extends React.Component<Props, State> {
         <Sidebar.Pushable>
           <Sidebar
             as={Menu}
-
             animation={"push"}
             inverted
             vertical
@@ -113,7 +107,7 @@ class MobileContainer extends React.Component<Props, State> {
             </div>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-      </Responsive>
+      </div>
     )
   }
 }
