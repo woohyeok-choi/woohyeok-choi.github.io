@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Label } from "semantic-ui-react"
 import { graphql, useStaticQuery } from "gatsby"
-import { formatPagePath } from "../../utils"
+import { formatPagePath } from "../../../utils"
 
 const BlogTags: React.FunctionComponent<Props> = ({ items }) => {
   return (

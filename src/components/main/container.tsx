@@ -1,8 +1,7 @@
 import * as React from "react"
-import { Responsive, Menu, Sidebar, Container } from "semantic-ui-react"
+import { Menu, Sidebar, Container } from "semantic-ui-react"
 import { Link } from "react-scroll"
-import Footer from '../common/footer'
-
+import Footer from "../common/footer"
 
 class DesktopContainer extends React.Component<Props, State> {
   state: State = {
@@ -17,10 +16,13 @@ class DesktopContainer extends React.Component<Props, State> {
     const { menuItems, children } = this.props
 
     return (
-      <div className={'tablet hidden'}>
+      <div>
         <Menu secondary pointing fixed={"top"} inverted style={{ backgroundColor: "#1b1c1d" }}>
           <Container>
-            <Menu.Item header content={"CHOI, WOOHYEOK"} style={{ fontSize: "1.5em", lineHeight: "0.1em" }}/>
+            <Menu.Item header
+                       key={'header'}
+                       content={"CHOI, WOOHYEOK"}
+                       style={{ fontSize: "1.5em", lineHeight: "0.1em" }}/>
             {menuItems.map(({ name, key }, index) =>
               <Menu.Item
                 key={key}
@@ -41,6 +43,7 @@ class DesktopContainer extends React.Component<Props, State> {
         <div style={{ paddingTop: "3.0em" }}>
           {children}
         </div>
+        <Footer/>
       </div>
     )
   }
@@ -65,7 +68,7 @@ class MobileContainer extends React.Component<Props, State> {
     const { menuItems, children } = this.props
 
     return (
-      <div className={'tablet mobile only'}>
+      <div>
         <Menu secondary pointing fixed={"top"} inverted style={{ backgroundColor: "#1b1c1d" }}>
           <Container>
             <Menu.Item key={"sidebar"} onClick={this.handleToggle} icon={"sidebar"}/>
@@ -105,6 +108,7 @@ class MobileContainer extends React.Component<Props, State> {
             <div style={{ paddingTop: "3.0em" }}>
               {children}
             </div>
+            <Footer/>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       </div>
@@ -112,13 +116,9 @@ class MobileContainer extends React.Component<Props, State> {
   }
 }
 
-export default ({ children, menuItems } : Props) => (
-  <div>
-    <DesktopContainer menuItems={menuItems} children={children}/>
-    <MobileContainer menuItems={menuItems} children={children}/>
-    <Footer/>
-  </div>
-)
+export {
+  DesktopContainer, MobileContainer
+}
 
 interface Props {
   children?: React.ReactNode

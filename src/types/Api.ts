@@ -5,12 +5,6 @@ interface PageInput {
   context?: any
 }
 
-interface NodeFieldInput {
-  node: object
-  name: string
-  value: string
-}
-
 interface BoundActionCreators {
   createPage: (page: PageInput) => void
   deletePage: (page: PageInput) => void

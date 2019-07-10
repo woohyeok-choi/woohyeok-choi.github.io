@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Grid, Icon, Image, Item, Label } from "semantic-ui-react"
-import { ContactType } from "../../types"
+import { Item, Label } from "semantic-ui-react"
+import { ContactType } from "../../../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const About: React.FunctionComponent<Props> = ({

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { graphql, navigate } from "gatsby"
-import Layout from "../components/common/layout"
-import BlogList from "../components/blog/main-post-list"
+import Layout from "../components/layout"
+import BlogList from "../components/blog/post-list"
 import { MarkdownRemarkNodeType } from "../types"
 import { formatPagePath } from "../utils"
 import SEO from "../components/common/seo"

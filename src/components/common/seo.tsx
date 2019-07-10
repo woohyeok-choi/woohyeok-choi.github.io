@@ -2,25 +2,8 @@ import * as React from "react"
 import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 
-interface Props {
-  description?: string
-  lang?: string
-  keywords?: Array<string>
-  title: string
-}
-
-interface QueryResult {
-  site: {
-    siteMetadata: {
-      title?: string
-      description?: string
-      author?: string
-    }
-  }
-}
-
 export default ({ lang = 'en', keywords = [], title, description = ''}: Props) => {
-  const { site } : QueryResult= useStaticQuery(graphql`
+  const { site } : QueryResult = useStaticQuery(graphql`
   query DefaultSEOQuery {
     site {
       siteMetadata {
@@ -90,4 +73,21 @@ export default ({ lang = 'en', keywords = [], title, description = ''}: Props) =
       }
     />
   )
+}
+
+interface Props {
+  description?: string
+  lang?: string
+  keywords?: Array<string>
+  title: string
+}
+
+interface QueryResult {
+  site: {
+    siteMetadata: {
+      title?: string
+      description?: string
+      author?: string
+    }
+  }
 }

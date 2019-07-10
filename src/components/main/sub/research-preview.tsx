@@ -1,17 +1,17 @@
 import * as React from "react"
 import { Card, Image, Placeholder } from "semantic-ui-react"
-import { MarkdownRemarkNodeType } from "../../types"
+import { MarkdownRemarkNodeType } from "../../../types"
 import { graphql, useStaticQuery } from "gatsby"
-import Carousel from "../common/carousel"
+import Carousel from "../../common/carousel"
 
 const ResearchPreviewItem: React.FunctionComponent<ItemProps> = ({data}) => {
   const { node } = data
-  const { id, frontmatter, fields} = node
+  const { frontmatter, fields} = node
   const { title, description, preview } = frontmatter
   const { slug } = fields
 
   return (
-    <Card key={id} style={{width: '100%'}} as={'a'} href={slug}>
+    <Card style={{width: '100%'}} as={'a'} href={slug}>
       {preview ? <Image src={preview.childImageSharp.resize.src} style={{marginBottom: 0}}/> :
         <Placeholder>
           <Placeholder.Image rectangular/>
@@ -29,17 +29,7 @@ const ResearchPreviewItem: React.FunctionComponent<ItemProps> = ({data}) => {
   )
 }
 
-interface ItemProps {
-  data: MarkdownRemarkNodeType
-}
-
-interface QueryResult {
-  research: {
-    edges: Array<MarkdownRemarkNodeType>
-  }
-}
-
-export default () => {
+export default ({slidesShown, showArrows} : Props) => {
   const { research } : QueryResult = useStaticQuery(graphql`
     query {
       research: allMarkdownRemark(
@@ -87,7 +77,24 @@ export default () => {
   )
   return (
     <Carousel
-      items={research.edges.map(item => <ResearchPreviewItem data={item}/>)}
+      slidesShown={slidesShown}
+      showArrows={showArrows}
+      items={research.edges.map(item => <ResearchPreviewItem key={item.node.id} data={item}/>)}
     />
   )
+}
+
+interface Props {
+  showArrows: boolean
+  slidesShown: number
+}
+
+interface ItemProps {
+  data: MarkdownRemarkNodeType
+}
+
+interface QueryResult {
+  research: {
+    edges: Array<MarkdownRemarkNodeType>
+  }
 }

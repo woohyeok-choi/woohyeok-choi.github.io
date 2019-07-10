@@ -14,7 +14,11 @@
 }
 
 .slick-next {
-    right: -10px
+    right: -20px
+}
+
+.slick-prev {
+    left: -35px
 }
 
 .pushable:not(body) > .ui.sidebar,

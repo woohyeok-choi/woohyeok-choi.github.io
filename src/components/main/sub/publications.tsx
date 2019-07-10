@@ -1,9 +1,9 @@
 import * as React from "react"
 import { Item } from "semantic-ui-react"
-import { PublicationType } from "../../types"
+import { PublicationType } from "../../../types"
 import { graphql, useStaticQuery } from "gatsby"
 import { ReactNode } from "react"
-import LinkedSpan from "../common/linked-span"
+import LinkedSpan from "../../common/linked-span"
 
 const Publications: React.FunctionComponent<Props> = ({
   items

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Layout from "../components/common/layout"
-import BlogContent from '../components/blog/main-post-page'
+import Layout from "../components/layout"
+import BlogContent from '../components/blog/post-content'
 import { MarkdownRemarkNodeType } from "../types"
 import { graphql } from "gatsby"
 import SEO from "../components/common/seo"
@@ -22,7 +22,6 @@ export default ( { data, pageContext, location } : Props) => {
     </Layout>
   )
 }
-
 
 interface Props {
   data: MarkdownRemarkNodeType

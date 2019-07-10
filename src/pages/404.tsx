@@ -1,6 +1,6 @@
 import * as React from "react"
 import SEO from "../components/common/seo"
-import Layout from "../components/common/layout"
+import Layout from "../components/layout"
 import { Container, Header, Segment } from "semantic-ui-react"
 import LinkedSpan from "../components/common/linked-span"
 

@@ -1,6 +1,6 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
-import { AffiliationType } from "../../types"
+import { AffiliationType } from "../../../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const Affiliations: React.FunctionComponent<Props> = ({

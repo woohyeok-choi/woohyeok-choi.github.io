@@ -1,6 +1,6 @@
 import * as React from "react"
 import { List } from "semantic-ui-react"
-import { AcademicServiceType } from "../../types"
+import { AcademicServiceType } from "../../../types"
 import { graphql, useStaticQuery } from "gatsby"
 
 const AcademicServices: React.FunctionComponent<Props> = ({

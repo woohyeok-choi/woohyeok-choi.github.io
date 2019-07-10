@@ -1,5 +1,5 @@
-import Layout from "../../components/common/layout"
-import BlogAllTags from "../../components/blog/main-tags"
+import Layout from "../../components/layout"
+import BlogAllTags from "../../components/blog/post-tags"
 import * as React from "react"
 import SEO from "../../components/common/seo"
 

@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Card, Item } from "semantic-ui-react"
-import { MarkdownRemarkNodeType } from "../../types"
+import { MarkdownRemarkNodeType } from "../../../types"
 import { graphql, useStaticQuery } from "gatsby"
-import { formatReadableDate } from '../../utils'
+import { formatReadableDate } from '../../../utils'
 
 class BlogSeeMoreItem extends React.Component<{}, SeeMoreState> {
   state: SeeMoreState = {
