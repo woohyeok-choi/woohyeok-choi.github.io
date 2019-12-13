@@ -6,8 +6,8 @@ import Carousel from "../../common/carousel"
 
 const ResearchPreviewItem: React.FunctionComponent<ItemProps> = ({data}) => {
   const { node } = data
-  const { frontmatter, fields} = node
-  const { title, description, preview } = frontmatter
+  const { frontmatter, fields, excerpt } = node
+  const { title, preview } = frontmatter
   const { slug } = fields
 
   return (
@@ -19,11 +19,9 @@ const ResearchPreviewItem: React.FunctionComponent<ItemProps> = ({data}) => {
       }
       <Card.Content>
         <Card.Header>{title}</Card.Header>
-        { description &&
         <Card.Description>
-          {description}
+          {excerpt}
         </Card.Description>
-        }
       </Card.Content>
     </Card>
   )
@@ -50,7 +48,6 @@ export default ({slidesShown, showArrows} : Props) => {
             id
             frontmatter {
               title
-              description
               preview {
                 childImageSharp {
                   resize(height: 300, width: 400, cropFocus: CENTER) {
@@ -59,6 +56,7 @@ export default ({slidesShown, showArrows} : Props) => {
                 }
               }
             }
+            excerpt(pruneLength: 300)
             fields {
               slug
               category {

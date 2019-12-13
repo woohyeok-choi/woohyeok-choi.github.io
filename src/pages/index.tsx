@@ -5,7 +5,7 @@ import Main from "../components/main/main"
 
 export default () => (
   <Layout>
-    <SEO title={'Main'}
+    <SEO title={'Home'}
          keywords={[
            'Human-computer interaction',
            'Exertion game',

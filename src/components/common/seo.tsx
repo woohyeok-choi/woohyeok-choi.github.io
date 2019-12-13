@@ -66,6 +66,12 @@ export default ({ lang = 'en', keywords = [], title, description = ''}: Props) =
           href: 'https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css'
         }
       ]}
+      script={[
+        {
+          src: 'https://kit.fontawesome.com/51dd16170c.js',
+          crossorigin: 'anonymous'
+        }
+      ]}
       title={title}
       titleTemplate={`%s | ${siteMetadata.title}`}
       meta={
