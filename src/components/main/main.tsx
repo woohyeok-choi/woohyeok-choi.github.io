@@ -39,9 +39,7 @@ const Content: React.FunctionComponent<Props> = ({ screenSize }: Props) => {
             content={
               <div>
                 <p>
-                  Choi, Woohyeok is a 5th-year Ph.d student in the <a href={"https://iclab.kaist.ac.kr"}
-                                                                      target={"_blank"}><LinkedSpan inverted={true}
-                                                                                                    children={"Interactive Computing Lab (ICLab)"}/></a> at <a
+                  Choi, Woohyeok has Ph.d in Industrial and System Engineering (Graduate School of Knowledge Service Engineering), <a
                   href={"https://www.kaist.ac.kr"} target={"_blank"}><LinkedSpan inverted={true}
                                                                                  children={"Korea Advanced Institute of Science and Technology (KAIST)"}/></a>.
                   My research interest focuses on building interactive
