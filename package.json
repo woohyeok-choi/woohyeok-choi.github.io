@@ -20,7 +20,7 @@
     "@types/react-swipe": "^6.0.0",
     "@types/semantic-ui": "^2.2.7",
     "disqus-react": "^1.0.5",
-    "gatsby": "^2.1.18",
+    "gatsby": "^2.32.13",
     "gatsby-image": "^2.0.30",
     "gatsby-plugin-manifest": "^2.0.19",
     "gatsby-plugin-offline": "^2.0.24",
