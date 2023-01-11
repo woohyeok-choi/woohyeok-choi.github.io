@@ -33,7 +33,7 @@
     "gatsby-source-filesystem": "^2.0.23",
     "gatsby-transformer-csv": "^2.0.7",
     "gatsby-transformer-excel": "^2.1.8",
-    "gatsby-transformer-remark": "^2.3.0",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^2.1.14",
     "gh-pages": "^2.0.1",
     "lodash": "^4.17.11",
